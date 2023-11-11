@@ -24,7 +24,7 @@ Route::get('/categories/{categoryName}/plants/{plantId}', [CategoryController::c
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('events', [EventController::class, 'store']);
-    Route::put('events/{event}', [EventController::class, 'update']);
+    Route::post('events/{id}', [EventController::class, 'update']);
     Route::delete('events/{event}', [EventController::class, 'destroy']);
 
     Route::post('categories', [CategoryController::class, 'store']);

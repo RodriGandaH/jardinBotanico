@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreEventRequest;
-
+use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
 
 class EventController extends Controller
@@ -36,7 +36,7 @@ class EventController extends Controller
         return response()->json($event, 200);
     }
 
-    public function update(StoreEventRequest $request, $id)
+    public function update(UpdateEventRequest $request, $id)
     {
         $event = Event::find($id);
 
