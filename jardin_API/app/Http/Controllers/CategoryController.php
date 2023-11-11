@@ -16,6 +16,12 @@ class CategoryController extends Controller
         return response()->json($categories, 200);
     }
 
+    public function getCategories()
+    {
+        $categories = Category::all();
+        return response()->json($categories, 200);
+    }
+
 
     public function store(StoreCategoryRequest $request)
     {
@@ -61,5 +67,22 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json(['message' => 'Category and its plants deleted']);
+    }
+
+    public function showPlant($categoryName, $plantId)
+    {
+        $category = Category::where('name', $categoryName)->first();
+
+        if (!$category) {
+            return response()->json(['message' => 'Category not found'], 404);
+        }
+
+        $plant = $category->plants()->where('id', $plantId)->first();
+
+        if (!$plant) {
+            return response()->json(['message' => 'Plant not found in this category'], 404);
+        }
+
+        return response()->json($plant, 200);
     }
 }

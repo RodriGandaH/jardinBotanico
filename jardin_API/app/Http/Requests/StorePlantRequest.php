@@ -15,9 +15,9 @@ class StorePlantRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:plants',
+            'name' => 'required|unique:plants,name',
             'description' => 'required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'category_id' => 'required|exists:categories,id',
         ];
     }
