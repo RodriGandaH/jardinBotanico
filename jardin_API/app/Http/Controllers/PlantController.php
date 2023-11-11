@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StorePlantRequest;
-
+use App\Http\Requests\UpdatePlantRequest;
 use App\Models\Plant;
 
 class PlantController extends Controller
@@ -39,7 +39,7 @@ class PlantController extends Controller
         return response()->json($plant, 200);
     }
 
-    public function update(StorePlantRequest $request, $id)
+    public function update(UpdatePlantRequest $request, $id)
     {
         $plant = Plant::find($id);
 
