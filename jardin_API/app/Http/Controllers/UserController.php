@@ -22,4 +22,10 @@ class UserController extends Controller
 
         return response()->json(['message' => 'Username or password is incorrect'], 401);
     }
+
+    public function logout()
+    {
+        auth()->user()->tokens()->delete();
+        return response()->json(['message' => 'Logged out'], 200);
+    }
 }

@@ -23,6 +23,9 @@ Route::get('plants/{plant}', [PlantController::class, 'show']);
 Route::get('/categories/{categoryName}/plants/{plantId}', [CategoryController::class, 'showPlant']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+
+    Route::get('/logout', [UserController::class, 'logout']);
+
     Route::post('events', [EventController::class, 'store']);
     Route::post('events/{id}', [EventController::class, 'update']);
     Route::delete('events/{event}', [EventController::class, 'destroy']);
