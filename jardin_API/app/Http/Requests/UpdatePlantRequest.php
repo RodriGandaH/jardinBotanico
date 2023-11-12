@@ -20,7 +20,7 @@ class UpdatePlantRequest extends FormRequest
             'name' => 'required|unique:plants,name,' . $plantId,
             'scientific_name' => 'sometimes|nullable',
             'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
             'category_id' => 'required|exists:categories,id',
         ];
     }
