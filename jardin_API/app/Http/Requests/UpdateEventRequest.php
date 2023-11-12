@@ -19,8 +19,9 @@ class UpdateEventRequest extends FormRequest
         return [
             'name' => 'required|unique:events,name,' . $eventId,
             'date' => 'required',
-            'description' => 'sometimes',
-            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'time' => 'required',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
 
         ];
     }

@@ -23,6 +23,7 @@ class EventController extends Controller
         $event = Event::create([
             'name' => $request->name,
             'date' => $request->date,
+            'time' => $request->time,
             'image' => 'img/' . $imageName,
             'description' => $request->description
         ]);
@@ -55,6 +56,7 @@ class EventController extends Controller
         }
 
         $event->name = $request->name;
+        $event->time = $request->time;
         $event->date = $request->date;
         $event->description = $request->description;
 

@@ -23,6 +23,7 @@ class PlantController extends Controller
 
         $plant = Plant::create([
             'name' => $request->name,
+            'scientific_name' => $request->scientific_name,
             'description' => $request->description,
             'image' => 'img/' . $imageName,
             'category_id' => $request->category_id
@@ -58,6 +59,7 @@ class PlantController extends Controller
         }
 
         $plant->name = $request->name;
+        $plant->scientific_name = $request->scientific_name;
         $plant->description = $request->description;
         $plant->category_id = $request->category_id;
 

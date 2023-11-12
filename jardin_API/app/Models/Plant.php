@@ -11,7 +11,7 @@ class Plant extends Model
 
     protected $table = "plants";
 
-    protected $fillable = ['name', 'description', 'image', 'category_id'];
+    protected $fillable = ['name', 'scientific_name', 'description', 'image', 'category_id'];
 
     public function category()
     {

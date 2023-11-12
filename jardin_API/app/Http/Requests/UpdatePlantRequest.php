@@ -18,9 +18,10 @@ class UpdatePlantRequest extends FormRequest
         $plantId = $this->route('id');
         return [
             'name' => 'required|unique:plants,name,' . $plantId,
-            'description' => 'sometimes',
-            'image' => 'sometimes|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'category_id' => 'sometimes|exists:categories,id',
+            'scientific_name' => 'sometimes|nullable',
+            'description' => 'required',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048|nullable',
+            'category_id' => 'required|exists:categories,id',
         ];
     }
 }
