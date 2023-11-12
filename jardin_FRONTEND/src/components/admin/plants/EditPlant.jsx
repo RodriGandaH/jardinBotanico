@@ -129,7 +129,6 @@ function EditPlant({ plant, onUpdate }) {
                             type="file"
                             onChange={handleImageChange}
                             accept=".jpeg,.jpg,.png,.gif,.svg"
-                            required
                         />
                     </label>
                     <button type="submit">Guardar</button>

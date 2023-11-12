@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -21,7 +19,7 @@ function Login() {
 
             localStorage.setItem('token', response.data.token);
 
-            navigate('/admin/category');
+            window.location.href = '/admin/category';
         } catch (error) {
             if (error.response) {
                 console.log('Error:', error.response.data.message);
@@ -32,21 +30,40 @@ function Login() {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                type="password"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <button type="submit">Login</button>
-        </form>
+        <>
+            <h1>Iniciar Sesión</h1>
+            <br />
+            <br />
+            <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                    <label className="form-label">
+                        Usuario
+                        <input
+                            className="form-control"
+                            type="text"
+                            placeholder="administrador"
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                        />
+                    </label>
+                </div>
+                <div>
+                    <label className="form-label">
+                        Contraseña
+                        <input
+                            className="form-control"
+                            type="password"
+                            placeholder="*********"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                    </label>
+                </div>
+                <button className="btn btn-primary" type="submit">
+                    Iniciar Sesión
+                </button>
+            </form>
+        </>
     );
 }
 

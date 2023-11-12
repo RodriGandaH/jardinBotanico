@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react';
 
 function useAuth() {
     const [loading, setLoading] = useState(true);
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState(false);
 
     useEffect(() => {
         const token = localStorage.getItem('token');
 
         if (token) {
-            setUser({ token });
+            setUser(true);
         }
         setLoading(false);
     }, []);
