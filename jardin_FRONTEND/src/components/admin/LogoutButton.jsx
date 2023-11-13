@@ -24,7 +24,11 @@ function LogoutButton() {
         }
     };
 
-    return <button onClick={logout}>Cerrar sesión</button>;
+    return (
+        <button className="btn btn-outline-danger" onClick={logout}>
+            Cerrar sesión
+        </button>
+    );
 }
 
 export default LogoutButton;
