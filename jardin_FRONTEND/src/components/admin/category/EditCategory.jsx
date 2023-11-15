@@ -19,7 +19,7 @@ function EditCategory({ category, onUpdate }) {
 
         try {
             const response = await axios.put(
-                `http://localhost:8000/api/categories/${category.id}`,
+                `https://apijardin.fly.dev/api/categories/${category.id}`,
                 { name },
                 {
                     headers: {

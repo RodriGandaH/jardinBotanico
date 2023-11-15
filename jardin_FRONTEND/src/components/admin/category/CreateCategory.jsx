@@ -24,7 +24,7 @@ function CreateCategory({ onUpdate }) {
 
         try {
             const response = await axios.post(
-                'http://localhost:8000/api/categories',
+                'https://apijardin.fly.dev/api/categories',
                 { name },
                 {
                     headers: {

@@ -8,7 +8,9 @@ function Plants() {
     const [plants, setPlants] = useState([]);
 
     const fetchPlants = async () => {
-        const response = await axios.get('http://localhost:8000/api/plants');
+        const response = await axios.get(
+            'https://apijardin.fly.dev/api/plants'
+        );
         setPlants(response.data);
     };
 
@@ -29,10 +31,11 @@ function Plants() {
                 plants.map((plant) => (
                     <div key={plant.id}>
                         <p>{plant.name}</p>
+                        <p>{plant.scientific_name}</p>
                         <p>{plant.description}</p>
                         <p>{plant.category.name}</p>
                         <img
-                            src={`http://localhost:8000/${plant.image}`}
+                            src={`https://apijardin.fly.dev/${plant.image}`}
                             alt={plant.name}
                             style={{
                                 display: 'block',

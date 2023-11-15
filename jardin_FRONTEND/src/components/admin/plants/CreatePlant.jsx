@@ -17,7 +17,7 @@ function CreatePlant({ onUpdate }) {
     useEffect(() => {
         const fetchCategories = async () => {
             const response = await axios.get(
-                'http://localhost:8000/api/categories/getCategories'
+                'https://apijardin.fly.dev/api/categories/getCategories'
             );
             setCategories(response.data);
         };
@@ -63,7 +63,7 @@ function CreatePlant({ onUpdate }) {
         console.log('Contenido de formData:', formData);
         try {
             const response = await axios.post(
-                'http://localhost:8000/api/plants',
+                'https://apijardin.fly.dev/api/plants',
                 formData,
                 {
                     headers: {

@@ -1,0 +1,38 @@
+# fly.toml app configuration file generated for apijardin on 2023-11-15T19:09:59-04:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "apijardin"
+primary_region = "scl"
+console_command = "php /var/www/html/artisan tinker"
+
+[build]
+  [build.args]
+    NODE_VERSION = "18"
+    PHP_VERSION = "7.4"
+
+[deploy]
+  release_command = "php /var/www/html/artisan migrate --force"
+
+[env]
+  APP_ENV = "production"
+  DB_CONNECTION = "mysql"
+  DB_DATABASE = "railway"
+  DB_HOST = "monorail.proxy.rlwy.net"
+  DB_PASSWORD = "6a-B5a4gAEdGf-BcEHhEad-Ag2326a-d"
+  DB_PORT = "10506"
+  DB_USERNAME = "root"
+  LOG_CHANNEL = "stderr"
+  LOG_LEVEL = "info"
+  LOG_STDERR_FORMATTER = "Monolog\\Formatter\\JsonFormatter"
+  SESSION_DRIVER = "cookie"
+  SESSION_SECURE_COOKIE = "true"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ["app"]

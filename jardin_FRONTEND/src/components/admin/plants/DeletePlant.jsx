@@ -9,11 +9,14 @@ function DeletePlant({ plant, onUpdate }) {
         const token = localStorage.getItem('token');
 
         try {
-            await axios.delete(`http://localhost:8000/api/plants/${plant.id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            await axios.delete(
+                `https://apijardin.fly.dev/api/plants/${plant.id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
             console.log('Planta eliminada');
             setModalIsOpen(false);

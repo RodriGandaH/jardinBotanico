@@ -7,19 +7,21 @@ Modal.setAppElement('#root');
 function EditPlant({ plant, onUpdate }) {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [name, setName] = useState(plant.name);
-    const [scientificName, setScientificName] = useState(plant.scientific_name);
+    const [scientificName, setScientificName] = useState(
+        plant.scientific_name || ''
+    );
     const [description, setDescription] = useState(plant.description);
     const [category, setCategory] = useState(plant.category_id);
     const [image, setImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(
-        `http://localhost:8000/${plant.image}`
+        `https://apijardin.fly.dev/${plant.image}`
     );
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const fetchCategories = async () => {
             const response = await axios.get(
-                'http://localhost:8000/api/categories/getCategories'
+                'https://apijardin.fly.dev/api/categories/getCategories'
             );
             setCategories(response.data);
         };
@@ -55,7 +57,7 @@ function EditPlant({ plant, onUpdate }) {
         console.log('id de la planta:', plant.id);
         try {
             const response = await axios.post(
-                `http://localhost:8000/api/plants/${plant.id}`,
+                `https://apijardin.fly.dev/api/plants/${plant.id}`,
                 formData,
                 {
                     headers: {
