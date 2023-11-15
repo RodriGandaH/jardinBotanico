@@ -7,22 +7,23 @@ use App\Http\Controllers\UserController;
 
 use Illuminate\Support\Facades\Route;
 
+Route::group(['middleware' => ['cors']], function () {
+    Route::post('/login', [UserController::class, 'login']);
 
-Route::post('/login', [UserController::class, 'login']);
+    Route::get('events', [EventController::class, 'index']);
+    Route::get('events/{event}', [EventController::class, 'show']);
 
-Route::get('events', [EventController::class, 'index']);
-Route::get('events/{event}', [EventController::class, 'show']);
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::get('categories/getCategories', [CategoryController::class, 'getCategories']);
+    Route::get('categories/{category}', [CategoryController::class, 'show']);
 
-Route::get('categories', [CategoryController::class, 'index']);
-Route::get('categories/getCategories', [CategoryController::class, 'getCategories']);
-Route::get('categories/{category}', [CategoryController::class, 'show']);
+    Route::get('plants', [PlantController::class, 'index']);
+    Route::get('plants/{plant}', [PlantController::class, 'show']);
 
-Route::get('plants', [PlantController::class, 'index']);
-Route::get('plants/{plant}', [PlantController::class, 'show']);
+    Route::get('/categories/{categoryName}/plants/{plantId}', [CategoryController::class, 'showPlant']);
+});
 
-Route::get('/categories/{categoryName}/plants/{plantId}', [CategoryController::class, 'showPlant']);
-
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
 
     Route::get('/logout', [UserController::class, 'logout']);
 
