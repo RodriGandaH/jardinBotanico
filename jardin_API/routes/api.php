@@ -32,7 +32,7 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
     Route::delete('events/{event}', [EventController::class, 'destroy']);
 
     Route::post('categories', [CategoryController::class, 'store']);
-    Route::put('categories/{category}', [CategoryController::class, 'update']);
+    Route::put('categories/{id}', [CategoryController::class, 'update']);
     Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
 
     Route::post('plants', [PlantController::class, 'store']);
