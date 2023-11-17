@@ -12,7 +12,7 @@ function DeleteCategory({ category, onUpdate }) {
 
         try {
             const response = await axios.delete(
-                `https://apijardin.fly.dev/api/categories/${category.id}`,
+                `http://127.0.0.1:8000/api/categories/${category.id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,

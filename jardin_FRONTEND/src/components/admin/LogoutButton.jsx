@@ -9,7 +9,7 @@ function LogoutButton() {
 
         try {
             const response = await axios.get(
-                'https://apijardin.fly.dev/api/logout',
+                'http://127.0.0.1:8000/api/logout',
                 { headers: { Authorization: `Bearer ${token}` } }
             );
 

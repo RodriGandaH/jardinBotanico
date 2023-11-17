@@ -12,7 +12,7 @@ function EditEvent({ event, onUpdate }) {
     const [description, setDescription] = useState(event.description);
     const [image, setImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(
-        `https://apijardin.fly.dev/${event.image}`
+        `http://127.0.0.1:8000/${event.image}`
     );
 
     let eventId = event.id;
@@ -45,7 +45,7 @@ function EditEvent({ event, onUpdate }) {
         console.log('id del evento:', eventId);
         try {
             const response = await axios.post(
-                `https://apijardin.fly.dev/api/events/${eventId}`,
+                `http://127.0.0.1:8000/api/events/${eventId}`,
                 formData,
                 {
                     headers: {

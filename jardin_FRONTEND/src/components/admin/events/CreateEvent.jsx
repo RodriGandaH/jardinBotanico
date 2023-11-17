@@ -47,7 +47,7 @@ function CreateEvent({ onUpdate }) {
 
         try {
             const response = await axios.post(
-                'https://apijardin.fly.dev/api/events',
+                'http://127.0.0.1:8000/api/events',
                 formData,
                 {
                     headers: {

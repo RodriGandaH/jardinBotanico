@@ -14,14 +14,14 @@ function EditPlant({ plant, onUpdate }) {
     const [category, setCategory] = useState(plant.category_id);
     const [image, setImage] = useState(null);
     const [previewImage, setPreviewImage] = useState(
-        `https://apijardin.fly.dev/${plant.image}`
+        `http://127.0.0.1:8000/${plant.image}`
     );
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
         const fetchCategories = async () => {
             const response = await axios.get(
-                'https://apijardin.fly.dev/api/categories/getCategories'
+                'http://127.0.0.1:8000/api/categories/getCategories'
             );
             setCategories(response.data);
         };
@@ -57,7 +57,7 @@ function EditPlant({ plant, onUpdate }) {
         console.log('id de la planta:', plant.id);
         try {
             const response = await axios.post(
-                `https://apijardin.fly.dev/api/plants/${plant.id}`,
+                `http://127.0.0.1:8000/api/plants/${plant.id}`,
                 formData,
                 {
                     headers: {

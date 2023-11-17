@@ -9,14 +9,11 @@ function DeleteEvent({ event, onUpdate }) {
         const token = localStorage.getItem('token');
 
         try {
-            await axios.delete(
-                `https://apijardin.fly.dev/api/events/${event.id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+            await axios.delete(`http://127.0.0.1:8000/api/events/${event.id}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            });
 
             console.log('Evento eliminado');
             setModalIsOpen(false);

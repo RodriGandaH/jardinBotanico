@@ -9,7 +9,7 @@ function Category() {
 
     const fetchCategories = async () => {
         const response = await axios.get(
-            'https://apijardin.fly.dev/api/categories'
+            'http://127.0.0.1:8000/api/categories'
         );
         setCategories(response.data);
     };

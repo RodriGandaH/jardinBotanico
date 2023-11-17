@@ -8,9 +8,7 @@ function Events() {
     const [events, setEvents] = useState([]);
 
     const fetchEvents = async () => {
-        const response = await axios.get(
-            'https://apijardin.fly.dev/api/events'
-        );
+        const response = await axios.get('http://127.0.0.1:8000/api/events');
         setEvents(response.data);
     };
 
@@ -34,7 +32,7 @@ function Events() {
                         <p>{event.description}</p>
                         <p>{event.date}</p>
                         <img
-                            src={`https://apijardin.fly.dev/${event.image}`}
+                            src={`http://127.0.0.1:8000/${event.image}`}
                             alt={event.name}
                             style={{
                                 display: 'block',
