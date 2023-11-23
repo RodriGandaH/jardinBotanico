@@ -12,4 +12,6 @@ class Event extends Model
     protected $table = "events";
 
     protected $fillable = ['name', 'date', 'time', 'image', 'description'];
+
+    public $timestamps = false;
 }
