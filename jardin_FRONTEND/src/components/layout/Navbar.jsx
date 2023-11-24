@@ -1,4 +1,10 @@
-const Navbar = (auth) => {
+export const activeUrl = (ruta) => {
+    ruta = "http://localhost:5173" + ruta;
+    let rutaActiva = window.location.href;
+    return ruta === rutaActiva;
+};
+
+const Navbar = (props) => {
     return (
         <nav className="navbar navbar-expand-lg fixed-top bg-success-subtle">
             <div className="container-fluid">
@@ -8,24 +14,32 @@ const Navbar = (auth) => {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li className="nav-item">
-                            <a className="nav-link active" aria-current="page" href="#">Plantas</a>
+                        <li className="nav-item" >
+                            <a
+                                className={("nav-link" + (activeUrl("/galeria") ? " active" : ""))}
+                                href="/galeria">
+                                Galería
+                            </a>
                         </li>
                         <li className="nav-item">
-                            <a className="nav-link" href="#">Eventos</a>
+                            <a
+                                className={"nav-link" + (activeUrl("/eventos") ? " active" : "")}
+                                href="/eventos">
+                                Eventos
+                            </a>
                         </li>
-                        <div className="vr" hidden={!auth.user}></div>
-                        <li className="nav-item" hidden={!auth.user}>
+                        <div className="vr" hidden={!props.isAdmin}></div>
+                        <li className="nav-item" hidden={!props.isAdmin}>
                             <a className="nav-link" href="#">A. Categorías</a>
                         </li>
-                        <li className="nav-item" hidden={!auth.user}>
-                            <a className="nav-link" href="#">A. Plantas</a>
+                        <li className="nav-item" hidden={!props.isAdmin}>
+                            <a className="nav-link" href="#">A. Galería</a>
                         </li>
-                        <li className="nav-item" hidden={!auth.user}>
+                        <li className="nav-item" hidden={!props.isAdmin}>
                             <a className="nav-link" href="#">A. Eventos</a>
                         </li>
                     </ul>
-                    <button className="btn btn-outline-success" type="button" hidden={!auth.user}>
+                    <button className="btn btn-outline-success" type="button" hidden={!props.isAdmin}>
                         Cerrar Sesión
                     </button>
                 </div>

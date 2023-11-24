@@ -5,7 +5,7 @@ import AxiosMockAdapter from 'axios-mock-adapter';
 const mock = new AxiosMockAdapter(axios);
 
 describe('EditEvent', () => {
-    test('post request to /api/events/:id', async () => {
+    test('put request to /api/events/:id', async () => {
         const token = 'test-token';
         localStorage.setItem('token', token);
 
