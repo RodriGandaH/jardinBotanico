@@ -1,3 +1,5 @@
+import LogoutButton from "../admin/LogoutButton";
+
 export const activeUrl = (ruta) => {
     ruta = "http://localhost:5173" + ruta;
     let rutaActiva = window.location.href;
@@ -39,9 +41,7 @@ const Navbar = (props) => {
                             <a className="nav-link" href="#">A. Eventos</a>
                         </li>
                     </ul>
-                    <button className="btn btn-outline-success" type="button" hidden={!props.isAdmin}>
-                        Cerrar Sesión
-                    </button>
+                    <LogoutButton isAdmin={props.isAdmin} />
                 </div>
             </div>
         </nav>

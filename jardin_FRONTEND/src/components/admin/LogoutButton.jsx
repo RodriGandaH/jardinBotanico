@@ -1,8 +1,6 @@
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
-function LogoutButton() {
-    const navigate = useNavigate();
+const LogoutButton = (props) => {
 
     const logout = async () => {
         const token = localStorage.getItem('token');
@@ -15,7 +13,7 @@ function LogoutButton() {
 
             if (response.status === 200) {
                 localStorage.removeItem('token');
-                navigate('/');
+                window.location.href = "/";
             } else {
                 console.error('Failed to log out');
             }
@@ -25,8 +23,8 @@ function LogoutButton() {
     };
 
     return (
-        <button className="btn btn-outline-danger" onClick={logout}>
-            Cerrar sesión
+        <button className="btn btn-outline-success" onClick={logout} hidden={!props.isAdmin}>
+            Cerrar Sesión
         </button>
     );
 }

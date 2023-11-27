@@ -22,7 +22,8 @@ function App() {
     return (
         <>
             <Navbar isAdmin={auth.user} />
-            <main className='flex-shrink-0 container' style={{ paddingTop: '8vh', minHeight: '91vh' }}>
+            <main className='flex-shrink-0 container'
+                style={{ paddingTop: '8vh', paddingBottom: '2vh', minHeight: '91vh' }}>
                 <Router>
                     <Routes>
                         <Route path="/" element={<Home />} />
