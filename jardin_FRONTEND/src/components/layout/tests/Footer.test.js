@@ -61,7 +61,7 @@ describe('Footer', () => {
             expect(element.getElementsByTagName("i").length === 1 && tag.getAttribute("href") === fakeData.instagram).toBeTruthy();
         });
 
-        test('Carga de todas', () => {
+        test('Carga de todas las RRSS', () => {
             let fakeData = { facebook: 'https://www.google.com/', x: "https://www.google.com/", tiktok: "https://www.google.com/", instagram: "https://www.google.com/" };
             mock.onGet("/users").reply(function (config) {
                 return [200, fakeData,];
