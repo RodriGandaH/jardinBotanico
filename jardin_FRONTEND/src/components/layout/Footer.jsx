@@ -1,6 +1,6 @@
 const Footer = () => {
     return (
-        <footer className="footer bg-success-subtle" style={{ paddingTop: '3px' }}>
+        <footer className="footer bg-success-subtle" style={{ paddingTop: '5px' }}>
             <section className="text-center py-2">
                 <i className="bi bi-house-door-fill"></i> C. R. Rivero Torrez 1630, Cochabamba (Muyurina) 1638 Cochabamba, Bolivia
                 <i className="ms-4 bi bi-envelope-fill"></i> informaciones.jardin.botanico@gmail.com

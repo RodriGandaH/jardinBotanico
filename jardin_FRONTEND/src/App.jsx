@@ -11,6 +11,8 @@ import Dashboard from './components/admin/Dashboard';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Galeria from './components/galeria/Galeria';
+import Planta from './components/planta/Planta'
+import '../src/components/galeria/Galeria.css';
 
 function App() {
     const auth = useAuth();
@@ -28,6 +30,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/galeria" element={<Galeria />} />
+                        <Route path="/planta/:id" element={<Planta />} />
                         <Route path="/eventos" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route
