@@ -32,13 +32,13 @@ const Navbar = (props) => {
                         </li>
                         <div className="vr" hidden={!props.isAdmin}></div>
                         <li className="nav-item" hidden={!props.isAdmin}>
-                            <a className="nav-link" href="#">A. Categorías</a>
+                            <a className="nav-link" href="/admin/category">A. Categorías</a>
                         </li>
                         <li className="nav-item" hidden={!props.isAdmin}>
-                            <a className="nav-link" href="#">A. Galería</a>
+                            <a className="nav-link" href="/admin/plants">A. Galería</a>
                         </li>
                         <li className="nav-item" hidden={!props.isAdmin}>
-                            <a className="nav-link" href="#">A. Eventos</a>
+                            <a className="nav-link" href="/admin/events">A. Eventos</a>
                         </li>
                     </ul>
                     <LogoutButton isAdmin={props.isAdmin} />
