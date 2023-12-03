@@ -38,7 +38,7 @@ function CreateCategory({ onUpdate }) {
                 Registrar categoría
             </button>
 
-            <div className="modal fade" id="modalCrearCategoria" tabIndex="-1" aria-labelledby="modalCrearCategoriaLabel" aria-hidden="true">
+            <div className="modal fade" data-bs-backdrop='static' id="modalCrearCategoria" tabIndex="-1" aria-labelledby="modalCrearCategoriaLabel" aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">

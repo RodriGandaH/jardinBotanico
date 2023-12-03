@@ -41,7 +41,7 @@ function EditCategory({ category, onUpdate }) {
                 Editar
             </button>
 
-            <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby={idLabel} aria-hidden="true">
+            <div className="modal fade" data-bs-backdrop='static' id={idModal} tabIndex="-1" aria-labelledby={idLabel} aria-hidden="true">
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
