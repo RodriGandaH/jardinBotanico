@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+
 
 class CategoryController extends Controller
 {
     public function index()
     {
+        $categories = Category::with('plants.images')->get();
 
-        $categories = Category::all();
-        $categories->load('plants');
         return response()->json($categories, 200);
     }
+
 
     public function getCategories()
     {
@@ -39,35 +42,47 @@ class CategoryController extends Controller
         return response()->json($category, 200);
     }
 
-    public function update(StoreCategoryRequest $request, $id)
+
+    public function update(Request $request, $id)
     {
+        try {
+            $this->validate($request, [
+                'name' => 'required|unique:categories,name,' . $id,
+            ]);
+        } catch (ValidationException $e) {
+            return response()->json(['errors' => $e->errors()], 422);
+        }
+
         $category = Category::find($id);
 
-        $category->name = $request->name;
-
-        $category->save();
-
-        return response()->json($category, 200);
+        if ($category) {
+            $category->name = $request->name;
+            $category->save();
+            return response()->json($category, 200);
+        } else {
+            return response()->json(['error' => 'Category not found'], 404);
+        }
     }
+
 
     public function destroy($id)
     {
         $category = Category::find($id);
 
-        foreach ($category->plants as $plant) {
-
-            $imagePath = $plant->image;
-
-            if (file_exists($imagePath)) {
-                unlink($imagePath);
+        if ($category) {
+            foreach ($category->plants as $plant) {
+                $plant->category_id = 0;
+                $plant->save();
             }
-            $plant->delete();
+
+            $category->delete();
+
+            return response()->json(['message' => 'Categoría eliminada, las plantas asociadas ahora tienen category_id = 0'], 200);
+        } else {
+            return response()->json(['error' => 'Categoría no encontrada'], 404);
         }
-
-        $category->delete();
-
-        return response()->json(['message' => 'Category and its plants deleted']);
     }
+
 
     public function showPlant($categoryName, $plantId)
     {

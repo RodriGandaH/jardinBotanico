@@ -11,12 +11,22 @@ class Plant extends Model
 
     protected $table = "plants";
 
-    protected $fillable = ['name', 'scientific_name', 'description', 'image', 'category_id'];
+    protected $fillable = ['name', 'scientific_name', 'description', 'category_id'];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(PlantImage::class);
+    }
+    public function medicinalProperties()
+    {
+        return $this->hasMany(MedicinalProperty::class);
+    }
+
 
     public $timestamps = false;
 }

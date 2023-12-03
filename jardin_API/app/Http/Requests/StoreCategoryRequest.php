@@ -14,9 +14,9 @@ class StoreCategoryRequest extends FormRequest
 
     public function rules()
     {
-        $categoryId = $this->route('id');
+
         return [
-            'name' => 'required|unique:categories,name,' . $categoryId,
+            'name' => 'required|unique:categories,name,'
         ];
     }
 }

@@ -14,7 +14,6 @@ class CreatePlantsTable extends Migration
             $table->string('name');
             $table->string('scientific_name')->nullable();
             $table->text('description');
-            $table->string('image');
             $table->foreignId('category_id')->constrained();
             $table->timestamps();
         });
