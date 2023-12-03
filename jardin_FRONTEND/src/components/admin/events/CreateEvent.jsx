@@ -1,35 +1,40 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
-Modal.setAppElement('#root');
+import $ from 'jquery';
 
 function CreateEvent({ onUpdate }) {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
     const [name, setName] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [description, setDescription] = useState('');
-    const [image, setImage] = useState(null);
-    const [previewImage, setPreviewImage] = useState(null);
+    const [images, setImages] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
 
-    const openModal = () => {
-        setModalIsOpen(true);
-    };
-
-    const closeModal = () => {
-        setName('');
-        setDate('');
-        setTime('');
-        setDescription('');
-        setImage(null);
-        setPreviewImage(null);
-        setModalIsOpen(false);
-    };
+    useEffect(() => {
+        $('#createEventModal').on('hidden.bs.modal', function () {
+            setName('');
+            setDate('');
+            setTime('');
+            setDescription('');
+            setImages([]);
+            setPreviewImages([]);
+        });
+    }, []);
 
     const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
-        setPreviewImage(URL.createObjectURL(e.target.files[0]));
+        setImages([...images, ...e.target.files]);
+        setPreviewImages([
+            ...previewImages,
+            ...Array.from(e.target.files).map((file) =>
+                URL.createObjectURL(file)
+            ),
+        ]);
+    };
+
+    const removeImage = (index) => (event) => {
+        event.preventDefault();
+        setImages(images.filter((_, i) => i !== index));
+        setPreviewImages(previewImages.filter((_, i) => i !== index));
     };
 
     const handleSubmit = async (event) => {
@@ -41,9 +46,9 @@ function CreateEvent({ onUpdate }) {
         formData.append('date', date);
         formData.append('time', time);
         formData.append('description', description);
-        if (image) {
-            formData.append('image', image);
-        }
+        images.forEach((image, i) => {
+            formData.append(`images[${i}]`, image);
+        });
 
         try {
             const response = await axios.post(
@@ -56,7 +61,7 @@ function CreateEvent({ onUpdate }) {
                 }
             );
 
-            closeModal();
+            $('#createEventModal').modal('hide');
             onUpdate();
         } catch (error) {
             console.log('Error al crear el evento:', error);
@@ -65,74 +70,177 @@ function CreateEvent({ onUpdate }) {
 
     return (
         <div>
-            <button onClick={openModal}>Crear evento</button>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                contentLabel="Crear evento"
+            <button
+                className="btn btn-primary mb-3"
+                data-bs-toggle="modal"
+                data-bs-target="#createEventModal"
             >
-                <h2>Crear evento</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Nombre:
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Fecha:
-                        <input
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Hora:
-                        <input
-                            type="time"
-                            value={time}
-                            onChange={(e) => setTime(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Descripción:
-                        <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Imagen:
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            accept=".jpeg,.jpg,.png,.gif,.svg"
-                            required
-                        />
-                    </label>
-                    <button type="submit">Guardar</button>
-                </form>
-                <button onClick={closeModal}>Cerrar</button>
-                {previewImage && (
-                    <img
-                        src={previewImage}
-                        alt="Vista previa de la imagen seleccionada"
-                        style={{
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            width: '50%',
-                        }}
-                    />
-                )}
-            </Modal>
+                Crear evento
+            </button>
+            <div
+                className="modal fade"
+                id="createEventModal"
+                tabIndex="-1"
+                aria-labelledby="createEventModalLabel"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog modal-xl">
+                    {' '}
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5
+                                className="modal-title"
+                                id="createEventModalLabel"
+                            >
+                                Crear evento
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="modal-body">
+                                <div className="mb-3">
+                                    <label
+                                        htmlFor="eventName"
+                                        className="form-label"
+                                    >
+                                        Nombre:
+                                    </label>
+                                    <input
+                                        type="text"
+                                        className="form-control"
+                                        id="eventName"
+                                        value={name}
+                                        onChange={(e) =>
+                                            setName(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+                                <div className="mb-3">
+                                    <label
+                                        htmlFor="eventDescription"
+                                        className="form-label"
+                                    >
+                                        Descripción:
+                                    </label>
+                                    <textarea
+                                        className="form-control"
+                                        id="eventDescription"
+                                        value={description}
+                                        onChange={(e) =>
+                                            setDescription(e.target.value)
+                                        }
+                                        required
+                                    />
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col">
+                                        <label
+                                            htmlFor="eventDate"
+                                            className="form-label"
+                                        >
+                                            Fecha:
+                                        </label>
+                                        <input
+                                            type="date"
+                                            className="form-control"
+                                            id="eventDate"
+                                            value={date}
+                                            onChange={(e) =>
+                                                setDate(e.target.value)
+                                            }
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <label
+                                            htmlFor="eventTime"
+                                            className="form-label"
+                                        >
+                                            Hora:
+                                        </label>
+                                        <input
+                                            type="time"
+                                            className="form-control"
+                                            id="eventTime"
+                                            value={time}
+                                            onChange={(e) =>
+                                                setTime(e.target.value)
+                                            }
+                                            required
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <label
+                                            htmlFor="eventImages"
+                                            className="form-label"
+                                        >
+                                            Imagenes:
+                                        </label>
+                                        <input
+                                            type="file"
+                                            className="form-control"
+                                            id="eventImages"
+                                            onChange={handleImageChange}
+                                            accept=".jpeg,.jpg,.png,.gif,.svg"
+                                            multiple
+                                            required
+                                        />
+                                    </div>
+                                </div>
+                                <div className="d-flex flex-wrap justify-content-center">
+                                    {previewImages.map((url, i) => (
+                                        <div
+                                            key={i}
+                                            className="position-relative m-2"
+                                        >
+                                            <img
+                                                src={url}
+                                                alt={`Vista previa de la imagen seleccionada ${
+                                                    i + 1
+                                                }`}
+                                                className="img-thumbnail"
+                                                style={{
+                                                    width: '250px',
+                                                    height: '250px',
+                                                }}
+                                            />
+                                            <button
+                                                className="btn btn-danger position-absolute top-0 end-0"
+                                                onClick={(event) =>
+                                                    removeImage(i)(event)
+                                                }
+                                            >
+                                                <i className="bi bi-trash-fill"></i>{' '}
+                                            </button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="modal-footer d-flex justify-content-between">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Cerrar
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

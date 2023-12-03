@@ -1,10 +1,6 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
 import axios from 'axios';
 
 function DeleteEvent({ event, onUpdate }) {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
 
@@ -16,7 +12,7 @@ function DeleteEvent({ event, onUpdate }) {
             });
 
             console.log('Evento eliminado');
-            setModalIsOpen(false);
+            $('#deleteEventModal').modal('hide');
             onUpdate();
         } catch (error) {
             console.log('Error al eliminar el evento:', error);
@@ -25,20 +21,60 @@ function DeleteEvent({ event, onUpdate }) {
 
     return (
         <div>
-            <button onClick={() => setModalIsOpen(true)}>
-                Eliminar evento
-            </button>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                contentLabel="Eliminar evento"
+            <button
+                data-bs-toggle="modal"
+                data-bs-target="#deleteEventModal"
+                className="btn btn-danger mx-1"
             >
-                <p>¿Estás seguro de que quieres eliminar este evento?</p>
-                <button onClick={handleDelete}>Sí, eliminar</button>
-                <button onClick={() => setModalIsOpen(false)}>
-                    No, cancelar
-                </button>
-            </Modal>
+                Eliminar
+            </button>
+            <div
+                className="modal fade"
+                id="deleteEventModal"
+                tabIndex="-1"
+                aria-labelledby="deleteEventModalLabel"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5
+                                className="modal-title"
+                                id="deleteEventModalLabel"
+                            >
+                                Eliminar evento
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            <p>
+                                ¿Estás seguro de que quieres eliminar este
+                                evento?
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                No, cancelar
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="btn btn-danger"
+                            >
+                                Sí, eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

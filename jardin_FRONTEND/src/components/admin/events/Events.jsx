@@ -22,27 +22,38 @@ function Events() {
 
     return (
         <>
-            <h1>Eventos</h1>
+            <h1 className="mb-4">Eventos</h1>
 
             <CreateEvent onUpdate={handleUpdate} />
             {events.length > 0 ? (
                 events.map((event) => (
-                    <div key={event.id}>
-                        <p>{event.name}</p>
-                        <p>{event.description}</p>
-                        <p>{event.date}</p>
-                        <img
-                            src={`http://127.0.0.1:8000/${event.image}`}
-                            alt={event.name}
-                            style={{
-                                display: 'block',
-                                marginLeft: 'auto',
-                                marginRight: 'auto',
-                                width: '50%',
-                            }}
-                        />
-                        <EditEvent event={event} onUpdate={handleUpdate} />
-                        <DeleteEvent event={event} onUpdate={handleUpdate} />
+                    <div key={event.id} className="card mb-3">
+                        <div className="card-body">
+                            <p>
+                                <strong>Nombre:</strong> {event.name}
+                            </p>
+                            <p>
+                                <strong>Descripción:</strong>{' '}
+                                {event.description}
+                            </p>
+                            <p>
+                                <strong>Fecha:</strong> {event.date}
+                            </p>
+                            <p className="mb-0">
+                                <strong>Hora:</strong> {event.time}
+                            </p>
+                        </div>
+                        <div className="m-2 d-flex justify-content-end">
+                            <EditEvent
+                                event={event}
+                                onUpdate={handleUpdate}
+                                id={event.id}
+                            />
+                            <DeleteEvent
+                                event={event}
+                                onUpdate={handleUpdate}
+                            />
+                        </div>
                     </div>
                 ))
             ) : (
@@ -51,4 +62,5 @@ function Events() {
         </>
     );
 }
+
 export default Events;

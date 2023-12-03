@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const LogoutButton = (props) => {
-
     const logout = async () => {
         const token = localStorage.getItem('token');
 
@@ -13,7 +12,7 @@ const LogoutButton = (props) => {
 
             if (response.status === 200) {
                 localStorage.removeItem('token');
-                window.location.href = "/";
+                window.location.href = '/';
             } else {
                 console.error('Failed to log out');
             }
@@ -23,10 +22,14 @@ const LogoutButton = (props) => {
     };
 
     return (
-        <button className="btn btn-outline-success" onClick={logout} hidden={!props.isAdmin}>
+        <button
+            className="btn btn-outline-danger"
+            onClick={logout}
+            hidden={!props.isAdmin}
+        >
             Cerrar Sesión
         </button>
     );
-}
+};
 
 export default LogoutButton;

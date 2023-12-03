@@ -113,17 +113,23 @@ class EventController extends Controller
     {
         $event = Event::find($id);
 
-        $imagePath = $event->image;
+        // Elimina las imágenes asociadas al evento
+        foreach ($event->images as $image) {
+            $imagePath = $image->image;
 
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
 
-        if (file_exists($imagePath)) {
-            unlink($imagePath);
+            $image->delete();
         }
 
+        // Ahora puedes eliminar el evento
         $event->delete();
 
         return response()->json(['message' => 'Event deleted']);
     }
+
     public function deleteImage($id)
     {
         $image = EventImage::find($id);
