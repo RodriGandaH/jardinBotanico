@@ -11,7 +11,13 @@ class Event extends Model
 
     protected $table = "events";
 
-    protected $fillable = ['name', 'date', 'time', 'image', 'description'];
+    protected $fillable = ['name', 'date', 'time',  'description'];
+
+    public function images()
+    {
+        return $this->hasMany(EventImage::class);
+    }
+
 
     public $timestamps = false;
 }

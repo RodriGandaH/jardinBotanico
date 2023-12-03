@@ -18,7 +18,7 @@ class StoreEventRequest extends FormRequest
             'date' => 'required',
             'time' => 'required',
             'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
         ];
     }
 }

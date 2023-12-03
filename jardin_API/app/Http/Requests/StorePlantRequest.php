@@ -17,7 +17,7 @@ class StorePlantRequest extends FormRequest
         return [
             'name' => 'required|unique:plants,name',
             'description' => 'required',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+
             'category_id' => 'required|exists:categories,id',
         ];
     }
