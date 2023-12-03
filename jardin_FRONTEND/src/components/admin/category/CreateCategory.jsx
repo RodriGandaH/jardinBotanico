@@ -1,21 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
+import { useState } from 'react';
 import axios from 'axios';
 
-Modal.setAppElement('#root');
+$('#modalCrearCategoria').on('hidden.bs.modal', function (e) {
+    document.getElementById("nombreCategoria").value = "";
+});
 
 function CreateCategory({ onUpdate }) {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+
     const [name, setName] = useState('');
-
-    const openModal = () => {
-        setModalIsOpen(true);
-    };
-
-    const closeModal = () => {
-        setName('');
-        setModalIsOpen(false);
-    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -32,10 +24,8 @@ function CreateCategory({ onUpdate }) {
                     },
                 }
             );
-
-            console.log('Categoría creada:', response.data);
             setName('');
-            closeModal();
+            $('#modalCrearCategoria').modal('hide');
             onUpdate();
         } catch (error) {
             console.log('Error al crear la categoría:', error);
@@ -43,29 +33,38 @@ function CreateCategory({ onUpdate }) {
     };
 
     return (
-        <div>
-            <button onClick={openModal}>Crear categoría</button>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                contentLabel="Crear categoría"
-            >
-                <h2>Categoría</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Nombre:
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <button type="submit">Guardar</button>
-                </form>
-                <button onClick={closeModal}>Cerrar</button>
-            </Modal>
-        </div>
+        <>
+            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalCrearCategoria">
+                Registrar categoría
+            </button>
+
+            <div className="modal fade" id="modalCrearCategoria" tabIndex="-1" aria-labelledby="modalCrearCategoriaLabel" aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id="modalCrearCategoriaLabel">Crear categoría</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="modal-body">
+                                <label htmlFor="nombreCategoria" className="form-label">Nombre:</label>
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    id="nombreCategoria"
+                                    placeholder="Ingrese un nombre..."
+                                    onChange={(e) => setName(e.target.value)}
+                                    required />
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                                <button type="submit" className="btn btn-primary">Guardar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 }
 

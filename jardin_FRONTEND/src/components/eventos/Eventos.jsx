@@ -47,7 +47,7 @@ const Eventos = () => {
         <>
             <div className="row">
                 <div className="col-md-6">
-                    <h3>Eventos</h3>
+                    <h2>Eventos</h2>
                 </div>
                 <div className="col-md-6">
                     <div className="input-group mb-3">

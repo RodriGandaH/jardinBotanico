@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
-import Modal from 'react-modal';
 import axios from 'axios';
 
-Modal.setAppElement('#root');
-
 function DeleteCategory({ category, onUpdate }) {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    const idModal = "modalEliminarCategoria" + category.id;
+    const idLabel = "modalEliminarCategoriaLabel" + category.id;
 
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
@@ -19,9 +17,7 @@ function DeleteCategory({ category, onUpdate }) {
                     },
                 }
             );
-
-            console.log('Categoria eliminada:', response.data);
-            setModalIsOpen(false);
+            $('#' + idModal).modal('hide');
             onUpdate();
         } catch (error) {
             console.log('Error al eliminar la categoría:', error);
@@ -29,22 +25,29 @@ function DeleteCategory({ category, onUpdate }) {
     };
 
     return (
-        <div>
-            <button onClick={() => setModalIsOpen(true)}>
-                Eliminar categoría
+        <>
+            <button type="button" className="btn btn-danger" data-bs-toggle="modal" data-bs-target={"#" + idModal}>
+                Eliminar
             </button>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                contentLabel="Eliminar categoría"
-            >
-                <p>¿Estás seguro de que quieres eliminar esta categoría?</p>
-                <button onClick={handleDelete}>Sí, eliminar</button>
-                <button onClick={() => setModalIsOpen(false)}>
-                    No, cancelar
-                </button>
-            </Modal>
-        </div>
+
+            <div className="modal fade" id={idModal} tabIndex="-1" aria-labelledby={idLabel} aria-hidden="true">
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h1 className="modal-title fs-5" id={idLabel}>Editar categoría</h1>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            ¿Estás seguro de que quieres eliminar la categoría "{category.name}"?
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">No, cancelar</button>
+                            <button type="button" className="btn btn-danger" onClick={handleDelete}>Sí, eliminar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </>
     );
 }
 

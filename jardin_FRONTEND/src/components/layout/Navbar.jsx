@@ -32,13 +32,22 @@ const Navbar = (props) => {
                         </li>
                         <div className="vr" hidden={!props.isAdmin}></div>
                         <li className="nav-item" hidden={!props.isAdmin}>
-                            <a className="nav-link" href="/admin/category">A. Categorías</a>
+                            <a className={"nav-link" + (activeUrl("/admin/category") ? " active" : "")}
+                                href="/admin/category">
+                                A. Categorías
+                            </a>
                         </li>
                         <li className="nav-item" hidden={!props.isAdmin}>
-                            <a className="nav-link" href="/admin/plants">A. Galería</a>
+                            <a className={"nav-link" + (activeUrl("/admin/plants") ? " active" : "")}
+                                href="/admin/plants">
+                                A. Galería
+                            </a>
                         </li>
                         <li className="nav-item" hidden={!props.isAdmin}>
-                            <a className="nav-link" href="/admin/events">A. Eventos</a>
+                            <a className={"nav-link" + (activeUrl("/admin/events") ? " active" : "")}
+                                href="/admin/events">
+                                A. Eventos
+                            </a>
                         </li>
                     </ul>
                     <LogoutButton isAdmin={props.isAdmin} />

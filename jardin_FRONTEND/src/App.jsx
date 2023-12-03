@@ -7,12 +7,14 @@ import {
 import Login from './components/admin/Login';
 import Home from './components/Home';
 import useAuth from './components/admin/hooks/useAuth';
-import Dashboard from './components/admin/Dashboard';
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Galeria from './components/galeria/Galeria';
 import Planta from './components/planta/Planta'
 import Eventos from './components/eventos/Eventos';
+import Category from './components/admin/category/Category';
+import Plants from './components/admin/plants/Plants';
+import Events from './components/admin/events/Events';
 import '../src/components/galeria/Galeria.css';
 
 function App() {
@@ -34,12 +36,9 @@ function App() {
                         <Route path="/planta/:id" element={<Planta />} />
                         <Route path="/eventos" element={<Eventos />} />
                         <Route path="/login" element={<Login />} />
-                        <Route
-                            path="/admin/*"
-                            element={
-                                auth.user ? <Dashboard /> : <Navigate to="/login" />
-                            }
-                        />
+                        <Route path="/admin/category" element={auth.user ? <Category /> : <Navigate to="/login" />} />
+                        <Route path="/admin/events" element={auth.user ? <Events /> : <Navigate to="/login" />} />
+                        <Route path="/admin/plants" element={auth.user ? <Plants /> : <Navigate to="/login" />} />
                     </Routes>
                 </Router>
             </main>

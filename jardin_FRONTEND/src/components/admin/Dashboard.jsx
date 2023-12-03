@@ -45,11 +45,6 @@ function Dashboard() {
                     </ul>
                 </div>
             </nav>
-            <Routes>
-                <Route path="category" element={<Category />} />
-                <Route path="events" element={<Events />} />
-                <Route path="plants" element={<Plants />} />
-            </Routes>
         </div>
     );
 }
