@@ -101,7 +101,7 @@ class PlantController extends Controller
 
             if ($request->hasfile('images')) {
                 $counter = 1;
-                // Agregar las nuevas imágenes
+
                 foreach ($request->file('images') as $image) {
                     $imageName = time() . '_' . $counter . '.' . $image->extension();
                     $image->move(public_path('img'), $imageName);
@@ -129,7 +129,7 @@ class PlantController extends Controller
         $plant = Plant::find($id);
 
         if ($plant) {
-            // Eliminar las imágenes asociadas
+
             foreach ($plant->images as $image) {
                 $oldImagePath = public_path($image->image);
                 if (file_exists($oldImagePath)) {
@@ -138,7 +138,7 @@ class PlantController extends Controller
                 $image->delete();
             }
 
-            // Eliminar la planta
+
             $plant->delete();
 
             return response()->json(['message' => 'Plant and associated images deleted']);
@@ -152,13 +152,13 @@ class PlantController extends Controller
         $image = PlantImage::find($id);
 
         if ($image) {
-            // Eliminar el archivo de imagen del servidor
+
             $oldImagePath = public_path($image->image);
             if (file_exists($oldImagePath)) {
                 unlink($oldImagePath);
             }
 
-            // Eliminar el registro de la imagen de la base de datos
+
             $image->delete();
 
             return response()->json(['message' => 'Image deleted successfully'], 200);
