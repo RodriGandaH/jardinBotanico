@@ -1,15 +1,18 @@
 import axios from 'axios';
 
-function DeleteEvent({ event, onUpdate }) {
+function DeleteEvent({ event: evento, onUpdate }) {
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
 
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/events/${event.id}`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
+            await axios.delete(
+                `http://127.0.0.1:8000/api/events/${evento.id}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
             console.log('Evento eliminado');
             $('#deleteEventModal').modal('hide');
