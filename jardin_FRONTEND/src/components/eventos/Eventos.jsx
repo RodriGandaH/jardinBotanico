@@ -1,6 +1,7 @@
 import axios from "axios";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
+import Carrusel from "./Carrusel";
 
 let eventosCopia;
 
@@ -67,11 +68,8 @@ const Eventos = () => {
                 <div className="row border mb-4" key={evento.id}>
                     <div className={"d-flex " + getFlexDirection()}>
                         <div className="d-flex col-md-4 col-ms-12 justify-content-center align-items-center">
-                            <div className="d-flex align-items-center mx-2" style={{ height: "250px" }}>
-                                <img
-                                    src={`http://127.0.0.1:8000/${evento.image}`}
-                                    className="object-fit-scale rounded"
-                                    alt={evento.name} style={{ maxHeight: "100%", maxWidth: "100%" }} />
+                            <div className="d-flex align-items-center mx-2" style={{ height: "275px" }}>
+                                <Carrusel imagenes={evento.images} />
                             </div>
                         </div>
                         <div className={"col-md-8 col-ms-12 my-2 " + getBorder()}>

@@ -38,7 +38,7 @@ function Category() {
             <h2>Categorías</h2>
             <div className="row mt-4">
                 <div className="col-md-6">
-                    <CreateCategory onUpdate={fetchCategories} />
+                    <CreateCategory onUpdate={fetchCategories} categories={categories} />
                 </div>
                 <div className="col-md-6">
                     <div className="input-group mb-3">

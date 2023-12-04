@@ -1,35 +1,80 @@
 import { useState } from 'react';
 import axios from 'axios';
-import $ from 'jquery';
 
-$('#modalCrearCategoria').on('hidden.bs.modal', function (e) {
-    document.getElementById('nombreCategoria').value = '';
-});
+function CreateCategory({ onUpdate, categories }) {
 
-function CreateCategory({ onUpdate }) {
     const [name, setName] = useState('');
+    const [feedback, setFeedBack] = useState("El nombre no puede estar vacio.");
+    const [validando, setValidando] = useState(false);
+    const [datosValidos, setDatosValidos] = useState(false);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        const token = localStorage.getItem('token');
-
-        try {
-            const response = await axios.post(
-                'http://127.0.0.1:8000/api/categories',
-                { name },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-            setName('');
-            $('#modalCrearCategoria').modal('hide');
-            onUpdate();
-        } catch (error) {
-            console.log('Error al crear la categoría:', error);
+        if (primeraValidacion() || datosValidos) {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await axios.post(
+                    'http://127.0.0.1:8000/api/categories',
+                    { name },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                setName('');
+                $('#modalCrearCategoria').modal('hide');
+                onUpdate();
+                resetModalData();
+            } catch (error) {
+                console.log('Error al crear la categoría:', error);
+            }
         }
+    };
+
+    const nameChange = (nombreCategoria) => {
+        if (validando) {
+            setDatosValidos(nombreCategoriaValido(nombreCategoria));
+        }
+    };
+
+    const primeraValidacion = () => {
+        if (!validando) {
+            setValidando(true);
+            let nombreCategoria = document.getElementById("nombreCategoria").value;
+            return nombreCategoriaValido(nombreCategoria);
+        } else {
+            return false;
+        }
+    }
+
+    const nombreCategoriaValido = (nombreCategoria) => {
+        let valido = nombreCategoria != "";
+        if (valido) {
+            categories.map(category => {
+                if (category.name === nombreCategoria) {
+                    valido = false;
+                    setFeedBack("EL nombre de categoría ingresado ya existe.");
+                }
+            });
+        } else {
+            setFeedBack("El nombre no puede estar vacio.");
+        }
+        if (valido) {
+            document.getElementById("nombreCategoria").classList.remove("is-invalid");
+            document.getElementById("nombreCategoria").classList.add("is-valid");
+        } else {
+            document.getElementById("nombreCategoria").classList.remove("is-valid");
+            document.getElementById("nombreCategoria").classList.add("is-invalid");
+        }
+        return valido;
+    }
+
+    const resetModalData = () => {
+        document.getElementById('nombreCategoria').value = '';
+        document.getElementById("nombreCategoria").classList.remove("is-valid");
+        document.getElementById("nombreCategoria").classList.remove("is-invalid");
+        setValidando(false);
     };
 
     return (
@@ -64,10 +109,11 @@ function CreateCategory({ onUpdate }) {
                                 type="button"
                                 className="btn-close"
                                 data-bs-dismiss="modal"
+                                onClick={resetModalData}
                                 aria-label="Close"
                             ></button>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        <form noValidate onSubmit={handleSubmit} id="formCrearCategoria">
                             <div className="modal-body">
                                 <label
                                     htmlFor="nombreCategoria"
@@ -81,14 +127,19 @@ function CreateCategory({ onUpdate }) {
                                     id="nombreCategoria"
                                     placeholder="Ingrese un nombre..."
                                     onChange={(e) => setName(e.target.value)}
+                                    onKeyUp={e => nameChange(e.target.value)}
                                     required
                                 />
+                                <div className="invalid-feedback">
+                                    {feedback}
+                                </div>
                             </div>
                             <div className="modal-footer">
                                 <button
                                     type="button"
                                     className="btn btn-secondary"
                                     data-bs-dismiss="modal"
+                                    onClick={resetModalData}
                                 >
                                     Cerrar
                                 </button>
