@@ -25,8 +25,11 @@ function DeletePlant({ plant, onUpdate }) {
 
     return (
         <div>
-            <button onClick={() => setModalIsOpen(true)}>
-                Eliminar planta
+            <button
+                onClick={() => setModalIsOpen(true)}
+                className="btn btn-danger mx-1"
+            >
+                Eliminar
             </button>
             <Modal
                 isOpen={modalIsOpen}

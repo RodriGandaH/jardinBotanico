@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Modal from 'react-modal';
+
 import axios from 'axios';
 
-Modal.setAppElement('#root');
-
 function CreatePlant({ onUpdate }) {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
     const [name, setName] = useState('');
     const [scientificName, setScientificName] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('');
-    const [image, setImage] = useState(null);
-    const [previewImage, setPreviewImage] = useState(null);
+    const [images, setImages] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
     const [categories, setCategories] = useState([]);
 
     useEffect(() => {
@@ -25,25 +22,31 @@ function CreatePlant({ onUpdate }) {
         fetchCategories();
     }, []);
 
-    const openModal = () => {
-        setModalIsOpen(true);
-    };
-
-    const closeModal = () => {
-        setName('');
-        setScientificName('');
-        setDescription('');
-        setCategory('');
-        setImage(null);
-        setPreviewImage(null);
-        setModalIsOpen(false);
-    };
+    useEffect(() => {
+        $('#createPlantModal').on('hidden.bs.modal', function () {
+            setName('');
+            setScientificName('');
+            setDescription('');
+            setCategory('');
+            setImages([]);
+            setPreviewImages([]);
+        });
+    }, []);
 
     const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
-        setPreviewImage(URL.createObjectURL(e.target.files[0]));
+        setImages([...images, ...e.target.files]);
+        setPreviewImages([
+            ...previewImages,
+            ...Array.from(e.target.files).map((file) =>
+                URL.createObjectURL(file)
+            ),
+        ]);
     };
-
+    const removeImage = (index) => (event) => {
+        event.preventDefault();
+        setImages(images.filter((_, i) => i !== index));
+        setPreviewImages(previewImages.filter((_, i) => i !== index));
+    };
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -53,14 +56,10 @@ function CreatePlant({ onUpdate }) {
         formData.append('scientific_name', scientificName);
         formData.append('description', description);
         formData.append('category_id', parseInt(category));
-        if (image) {
-            console.log('image', image);
-            formData.append('image', image);
-        }
-        for (let pair of formData.entries()) {
-            console.log(pair[0] + ', ' + pair[1]);
-        }
-        console.log('Contenido de formData:', formData);
+        images.forEach((image, i) => {
+            formData.append(`images[${i}]`, image);
+        });
+
         try {
             const response = await axios.post(
                 'http://127.0.0.1:8000/api/plants',
@@ -72,13 +71,7 @@ function CreatePlant({ onUpdate }) {
                 }
             );
 
-            console.log('Planta creada:', response.data);
-            setName('');
-            setDescription('');
-            setCategory('');
-            setImage(null);
-            setPreviewImage(null);
-            closeModal();
+            $('#createPlantModal').modal('hide');
             onUpdate();
         } catch (error) {
             console.log('Error al crear la planta:', error);
@@ -87,81 +80,208 @@ function CreatePlant({ onUpdate }) {
 
     return (
         <div>
-            <button onClick={openModal}>Crear planta</button>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={closeModal}
-                contentLabel="Crear planta"
+            <button
+                className="btn btn-primary mb-3"
+                data-bs-toggle="modal"
+                data-bs-target="#createPlantModal"
             >
-                <h2>Crear planta</h2>
-                <form onSubmit={handleSubmit}>
-                    <label>
-                        Nombre:
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            required
-                        />
-                    </label>
+                Crear planta
+            </button>
 
-                    <label>
-                        Nombre científico:
-                        <input
-                            type="text"
-                            value={scientificName}
-                            onChange={(e) => setScientificName(e.target.value)}
-                        />
-                    </label>
-
-                    <label>
-                        Descripción:
-                        <textarea
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                            required
-                        />
-                    </label>
-                    <label>
-                        Categoría:
-                        <select
-                            value={category}
-                            onChange={(e) => setCategory(e.target.value)}
-                            required
-                        >
-                            <option value="">Seleccione una categoría</option>
-                            {categories.map((category) => (
-                                <option key={category.id} value={category.id}>
-                                    {category.name}
-                                </option>
-                            ))}
-                        </select>
-                    </label>
-                    <label>
-                        Imagen:
-                        <input
-                            type="file"
-                            onChange={handleImageChange}
-                            accept=".jpeg,.jpg,.png,.gif,.svg"
-                            required
-                        />
-                    </label>
-                    <button type="submit">Guardar</button>
-                    <button onClick={closeModal}>Cerrar</button>
-                </form>
-                {previewImage && (
-                    <img
-                        src={previewImage}
-                        alt="Vista previa de la imagen seleccionada"
-                        style={{
-                            display: 'block',
-                            marginLeft: 'auto',
-                            marginRight: 'auto',
-                            width: '50%',
-                        }}
-                    />
-                )}
-            </Modal>
+            <div
+                className="modal fade"
+                id="createPlantModal"
+                tabIndex="-1"
+                aria-labelledby="createPlantModalLabel"
+                aria-hidden="true"
+            >
+                <div className="modal-dialog modal-xl">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5
+                                className="motal-title"
+                                id="createPlantModalLabel"
+                            >
+                                Crear Planta
+                            </h5>
+                            <button
+                                className="btn-close"
+                                type="button"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <form onSubmit={handleSubmit}>
+                            <div className="modal-body">
+                                <div className="row mb-3">
+                                    <div className="col">
+                                        <label
+                                            htmlFor="plantName"
+                                            className="form-label"
+                                        >
+                                            Nombre:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="plantName"
+                                            value={name}
+                                            onChange={(e) =>
+                                                setName(e.target.value)
+                                            }
+                                        />
+                                    </div>
+                                    <div className="col">
+                                        <label
+                                            htmlFor="scientificName"
+                                            className="form-label"
+                                        >
+                                            Nombre cientifico:
+                                        </label>
+                                        <input
+                                            type="text"
+                                            className="form-control"
+                                            id="scientificName"
+                                            value={scientificName}
+                                            onChange={(e) =>
+                                                setScientificName(
+                                                    e.target.value
+                                                )
+                                            }
+                                        />
+                                    </div>
+                                </div>
+                                <div className="mb-3 col-4">
+                                    <label
+                                        htmlFor="category"
+                                        className="form-label"
+                                    >
+                                        Categoría:
+                                    </label>
+                                    <select
+                                        className="form-select"
+                                        id="category"
+                                        value={category}
+                                        onChange={(e) =>
+                                            setCategory(e.target.value)
+                                        }
+                                    >
+                                        <option value="">
+                                            Selecciona una categoría
+                                        </option>
+                                        {categories.map((category) => (
+                                            <option
+                                                key={category.id}
+                                                value={category.id}
+                                            >
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+                                <div className="mb-3">
+                                    <label
+                                        htmlFor="plantDescription"
+                                        className="form-label"
+                                    >
+                                        Descripcion
+                                    </label>
+                                    <textarea
+                                        className="form-control"
+                                        id="plantDescription"
+                                        value={description}
+                                        onChange={(e) =>
+                                            setDescription(e.target.value)
+                                        }
+                                    ></textarea>
+                                </div>
+                                <div className="col">
+                                    <label
+                                        htmlFor="plantImages"
+                                        className="form-label"
+                                    >
+                                        Imagenes:
+                                    </label>
+                                    <div className="d-flex flex-wrap justify-content-around">
+                                        <div
+                                            className="card m-2"
+                                            style={{
+                                                width: '250px',
+                                                height: '250px',
+                                            }}
+                                            onClick={() =>
+                                                document
+                                                    .getElementById(
+                                                        'plantImages'
+                                                    )
+                                                    .click()
+                                            }
+                                        >
+                                            <div className="card-body d-flex flex-column justify-content-center align-items-center card-color">
+                                                <i className="bi bi-plus-lg fs-4"></i>
+                                                <p className="card-text fs-4">
+                                                    Agregar
+                                                </p>
+                                                <input
+                                                    type="file"
+                                                    className="form-control"
+                                                    id="plantImages"
+                                                    onChange={handleImageChange}
+                                                    accept=".jpeg,.jpg,.png,.gif,.svg"
+                                                    multiple
+                                                    required
+                                                    style={{ display: 'none' }}
+                                                />
+                                            </div>
+                                        </div>
+                                        {previewImages.map((url, i) => (
+                                            <div
+                                                key={i}
+                                                className="position-relative m-2"
+                                            >
+                                                <img
+                                                    src={url}
+                                                    alt={`Vista previa de la imagen seleccionada ${
+                                                        i + 1
+                                                    }`}
+                                                    className="img-thumbnail"
+                                                    style={{
+                                                        width: '250px',
+                                                        height: '250px',
+                                                    }}
+                                                />
+                                                <button
+                                                    className="btn btn-danger position-absolute top-0 end-0"
+                                                    onClick={(event) =>
+                                                        removeImage(i)(event)
+                                                    }
+                                                >
+                                                    <i className="bi bi-trash-fill"></i>{' '}
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="modal-footer d-flex justify-content-between">
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Cerrar
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="btn btn-primary"
+                                >
+                                    Guardar
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

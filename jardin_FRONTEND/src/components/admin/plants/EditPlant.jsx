@@ -75,7 +75,9 @@ function EditPlant({ plant, onUpdate }) {
 
     return (
         <div>
-            <button onClick={openModal}>Editar planta</button>
+            <button onClick={openModal} className="btn btn-primary">
+                Editar
+            </button>
             <Modal
                 isOpen={modalIsOpen}
                 onRequestClose={closeModal}

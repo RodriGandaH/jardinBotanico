@@ -22,28 +22,40 @@ function Plants() {
 
     return (
         <>
-            <h1>Plantas</h1>
+            <h1 className="mb-4">Plantas</h1>
 
             <CreatePlant onUpdate={handleUpdate} />
             {plants.length > 0 ? (
                 plants.map((plant) => (
-                    <div key={plant.id}>
-                        <p>{plant.name}</p>
-                        <p>{plant.scientific_name}</p>
-                        <p>{plant.description}</p>
-                        <p>{plant.category.name}</p>
-                        <img
-                            src={`http://127.0.0.1:8000/${plant.image}`}
-                            alt={plant.name}
-                            style={{
-                                display: 'block',
-                                marginLeft: 'auto',
-                                marginRight: 'auto',
-                                width: '50%',
-                            }}
-                        />
-                        <EditPlant plant={plant} onUpdate={handleUpdate} />
-                        <DeletePlant plant={plant} onUpdate={handleUpdate} />
+                    <div key={plant.id} className="card mb-3">
+                        <div className="card-body">
+                            <p>
+                                <strong>Nombre:</strong> {plant.name}
+                            </p>
+                            <p>
+                                <strong>Nombre científico:</strong>{' '}
+                                {plant.scientific_name}
+                            </p>
+                            <p>
+                                <strong>Descripción:</strong>{' '}
+                                {plant.description}
+                            </p>
+                            <p className="mb-0">
+                                <strong>Categoría:</strong>{' '}
+                                {plant.category.name}
+                            </p>
+                        </div>
+                        <div className="m-2 d-flex justify-content-end">
+                            <EditPlant
+                                plant={plant}
+                                onUpdate={handleUpdate}
+                                id={plant.id}
+                            />
+                            <DeletePlant
+                                plant={plant}
+                                onUpdate={handleUpdate}
+                            />
+                        </div>
                     </div>
                 ))
             ) : (
