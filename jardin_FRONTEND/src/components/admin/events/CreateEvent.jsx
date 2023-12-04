@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import $ from 'jquery';
 
 function CreateEvent({ onUpdate }) {
     const [name, setName] = useState('');
@@ -175,51 +174,73 @@ function CreateEvent({ onUpdate }) {
                                             required
                                         />
                                     </div>
-                                    <div className="col">
-                                        <label
-                                            htmlFor="eventImages"
-                                            className="form-label"
-                                        >
-                                            Imagenes:
-                                        </label>
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            id="eventImages"
-                                            onChange={handleImageChange}
-                                            accept=".jpeg,.jpg,.png,.gif,.svg"
-                                            multiple
-                                            required
-                                        />
-                                    </div>
                                 </div>
-                                <div className="d-flex flex-wrap justify-content-center">
-                                    {previewImages.map((url, i) => (
+                                <div className="col">
+                                    <label
+                                        htmlFor="eventImages"
+                                        className="form-label"
+                                    >
+                                        Imagenes:
+                                    </label>
+                                    <div className="d-flex flex-wrap justify-content-around">
                                         <div
-                                            key={i}
-                                            className="position-relative m-2"
+                                            className="card m-2"
+                                            style={{
+                                                width: '250px',
+                                                height: '250px',
+                                            }}
+                                            onClick={() =>
+                                                document
+                                                    .getElementById(
+                                                        'eventImages'
+                                                    )
+                                                    .click()
+                                            }
                                         >
-                                            <img
-                                                src={url}
-                                                alt={`Vista previa de la imagen seleccionada ${
-                                                    i + 1
-                                                }`}
-                                                className="img-thumbnail"
-                                                style={{
-                                                    width: '250px',
-                                                    height: '250px',
-                                                }}
-                                            />
-                                            <button
-                                                className="btn btn-danger position-absolute top-0 end-0"
-                                                onClick={(event) =>
-                                                    removeImage(i)(event)
-                                                }
-                                            >
-                                                <i className="bi bi-trash-fill"></i>{' '}
-                                            </button>
+                                            <div className="card-body d-flex flex-column justify-content-center align-items-center card-color">
+                                                <i className="bi bi-plus-lg fs-4"></i>
+                                                <p className="card-text fs-4">
+                                                    Agregar
+                                                </p>
+                                                <input
+                                                    type="file"
+                                                    className="form-control"
+                                                    id="eventImages"
+                                                    onChange={handleImageChange}
+                                                    accept=".jpeg,.jpg,.png,.gif,.svg"
+                                                    multiple
+                                                    required
+                                                    style={{ display: 'none' }}
+                                                />
+                                            </div>
                                         </div>
-                                    ))}
+                                        {previewImages.map((url, i) => (
+                                            <div
+                                                key={i}
+                                                className="position-relative m-2"
+                                            >
+                                                <img
+                                                    src={url}
+                                                    alt={`Vista previa de la imagen seleccionada ${
+                                                        i + 1
+                                                    }`}
+                                                    className="img-thumbnail"
+                                                    style={{
+                                                        width: '250px',
+                                                        height: '250px',
+                                                    }}
+                                                />
+                                                <button
+                                                    className="btn btn-danger position-absolute top-0 end-0"
+                                                    onClick={(event) =>
+                                                        removeImage(i)(event)
+                                                    }
+                                                >
+                                                    <i className="bi bi-trash-fill"></i>{' '}
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer d-flex justify-content-between">

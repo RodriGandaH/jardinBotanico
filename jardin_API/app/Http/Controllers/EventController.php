@@ -130,7 +130,7 @@ class EventController extends Controller
         return response()->json(['message' => 'Event deleted']);
     }
 
-    public function deleteImage($id)
+    public function destroyImage($id)
     {
         $image = EventImage::find($id);
 

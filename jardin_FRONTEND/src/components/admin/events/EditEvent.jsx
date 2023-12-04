@@ -1,21 +1,44 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function EditEvent({ event, onUpdate, id }) {
-    const [name, setName] = useState(event.name);
-    const [date, setDate] = useState(event.date);
-    const [time, setTime] = useState(event.time);
-    const [description, setDescription] = useState(event.description);
+function EditEvent({ event: evento, onUpdate, id }) {
+    const [name, setName] = useState(evento.name);
+    const [date, setDate] = useState(evento.date);
+    const [time, setTime] = useState(evento.time);
+    const [description, setDescription] = useState(evento.description);
+    const [newImages, setNewImages] = useState([]);
     const [images, setImages] = useState([]);
     const [previewImages, setPreviewImages] = useState(
-        event.images.map((image) => {
+        evento.images.map((image) => {
             const url = `http://127.0.0.1:8000/${image.image}`;
             return url;
         })
     );
 
+    useEffect(() => {
+        const modal = document.getElementById(`editEventModal-${id}`);
+        $(modal).on('hidden.bs.modal', function () {
+            // Actualiza el estado en lugar de recargar la página
+            setName(evento.name);
+            setDate(evento.date);
+            setTime(evento.time);
+            setDescription(evento.description);
+            setNewImages([]);
+            setImages([]);
+            setPreviewImages(
+                evento.images.map((image) => {
+                    const url = `http://127.0.0.1:8000/${image.image}`;
+                    return url;
+                })
+            );
+        });
+        return () => {
+            $(modal).off('hidden.bs.modal');
+        };
+    }, [evento]);
+
     const handleImageChange = (e) => {
-        setImages([...images, ...e.target.files]);
+        setNewImages([...newImages, ...e.target.files]);
         setPreviewImages([
             ...previewImages,
             ...Array.from(e.target.files).map((file) =>
@@ -24,29 +47,33 @@ function EditEvent({ event, onUpdate, id }) {
         ]);
     };
 
-    const removeImage = (index) => (event) => {
-        event.preventDefault();
-        const image = images[index];
-        console.log('Imagen a eliminar:', image);
-        if (image && image.id) {
-            console.log('ID de la imagen:', image.id);
-            const token = localStorage.getItem('token');
-            try {
-                axios.delete(
-                    `http://127.0.0.1:8000/api/events/images/${image.id}`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-                console.log('Imagen eliminada');
-            } catch (error) {
-                console.log('Error al eliminar la imagen:', error);
+    const handleDelete = async (i) => {
+        if (i < evento.images.length) {
+            const image = evento.images[i];
+            if (image && image.id) {
+                const token = localStorage.getItem('token');
+                try {
+                    await axios.delete(
+                        `http://127.0.0.1:8000/api/events/images/${image.id}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                    console.log('Imagen eliminada');
+                } catch (error) {
+                    console.log('Error al eliminar la imagen:', error);
+                }
             }
+        } else {
+            const newImageIndex = i - evento.images.length;
+            setNewImages(
+                newImages.filter((_, index) => index !== newImageIndex)
+            );
         }
-        setImages(images.filter((_, i) => i !== index));
-        setPreviewImages(previewImages.filter((_, i) => i !== index));
+
+        setPreviewImages(previewImages.filter((_, index) => index !== i));
     };
 
     const handleSubmit = async (event) => {
@@ -58,7 +85,8 @@ function EditEvent({ event, onUpdate, id }) {
         formData.append('date', date);
         formData.append('time', time);
         formData.append('description', description);
-        images.forEach((image, i) => {
+        newImages.forEach((image, i) => {
+            // Itera sobre newImages en lugar de images
             if (image instanceof File) {
                 formData.append(`images[${i}]`, image);
             }
@@ -66,7 +94,7 @@ function EditEvent({ event, onUpdate, id }) {
 
         try {
             const response = await axios.post(
-                `http://127.0.0.1:8000/api/events/${event.id}`,
+                `http://127.0.0.1:8000/api/events/${evento.id}`,
                 formData,
                 {
                     headers: {
@@ -75,7 +103,8 @@ function EditEvent({ event, onUpdate, id }) {
                 }
             );
 
-            $('#editEventModal').modal('hide');
+            $(`#editEventModal-${id}`).modal('hide');
+
             onUpdate();
         } catch (error) {
             console.log('Error al actualizar el evento:', error);
@@ -87,9 +116,9 @@ function EditEvent({ event, onUpdate, id }) {
             <button
                 className="btn btn-primary"
                 data-bs-toggle="modal"
-                data-bs-target={`#editEventModal-${event.id}`}
+                data-bs-target={`#editEventModal-${evento.id}`}
                 onClick={() => {
-                    console.log(event);
+                    console.log(evento);
                 }}
             >
                 Editar
@@ -192,53 +221,73 @@ function EditEvent({ event, onUpdate, id }) {
                                             required
                                         />
                                     </div>
-                                    <div className="col">
-                                        <label
-                                            htmlFor="eventImages"
-                                            className="form-label"
-                                        >
-                                            Imagenes:
-                                        </label>
-                                        <input
-                                            type="file"
-                                            className="form-control"
-                                            id="eventImages"
-                                            onChange={handleImageChange}
-                                            accept=".jpeg,.jpg,.png,.gif,.svg"
-                                            multiple
-                                        />
-                                    </div>
                                 </div>
-                                <div className="d-flex flex-wrap">
-                                    {previewImages.map((url, i) => (
+                                <div className="col">
+                                    <label
+                                        htmlFor="eventImages"
+                                        className="form-label"
+                                    >
+                                        Imagenes:
+                                    </label>
+                                    <div className="d-flex flex-wrap justify-content-around">
                                         <div
-                                            key={i}
-                                            className="position-relative m-2"
-                                        >
-                                            <img
-                                                src={url}
-                                                alt={`Vista previa de la imagen seleccionada ${
-                                                    i + 1
-                                                }`}
-                                                className="img-thumbnail"
-                                                style={{
-                                                    width: '300px',
-                                                    height: '300px',
-                                                }}
-                                            />
-                                            <button
-                                                className="btn btn-danger position-absolute top-0 end-0"
-                                                onClick={(event) =>
-                                                    removeImage(
-                                                        i,
-                                                        event.images[i]?.id
+                                            className="card m-2"
+                                            style={{
+                                                width: '300px',
+                                                height: '300px',
+                                            }}
+                                            onClick={() =>
+                                                document
+                                                    .getElementById(
+                                                        `eventImages-${id}`
                                                     )
-                                                }
-                                            >
-                                                <i className="bi bi-trash-fill"></i>{' '}
-                                            </button>
+                                                    .click()
+                                            }
+                                        >
+                                            <div className="card-body d-flex flex-column justify-content-center align-items-center card-color">
+                                                <i className="bi bi-plus-lg fs-4"></i>
+                                                <p className="card-text fs-4">
+                                                    Agregar
+                                                </p>
+                                                <input
+                                                    type="file"
+                                                    className="form-control"
+                                                    id={`eventImages-${id}`}
+                                                    onChange={handleImageChange}
+                                                    accept=".jpeg,.jpg,.png,.gif,.svg"
+                                                    multiple
+                                                    style={{ display: 'none' }}
+                                                />
+                                            </div>
                                         </div>
-                                    ))}
+                                        {previewImages.map((url, i) => (
+                                            <div
+                                                key={i}
+                                                className="position-relative m-2"
+                                            >
+                                                <img
+                                                    src={url}
+                                                    alt={`Vista previa de la imagen seleccionada ${
+                                                        i + 1
+                                                    }`}
+                                                    className="img-thumbnail"
+                                                    style={{
+                                                        width: '300px',
+                                                        height: '300px',
+                                                    }}
+                                                />
+                                                <button
+                                                    className="btn btn-danger position-absolute top-0 end-0"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleDelete(i);
+                                                    }}
+                                                >
+                                                    <i className="bi bi-trash-fill"></i>{' '}
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
                             <div className="modal-footer">
