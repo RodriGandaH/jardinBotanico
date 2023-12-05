@@ -27,12 +27,22 @@ const Galeria = () => {
         datos.map(categoria => {
             if (idCategoria === -1 || idCategoria === categoria.id) {
                 categoria.plants.map(planta => {
+                    planta =
+                    {
+                        id: planta.id,
+                        name: planta.name,
+                        scientific_name: planta.scientific_name,
+                        description: planta.description,
+                        images: planta.images,
+                        category: categoria.name
+                    };
                     plantas.push(planta);
                 });
             }
         });
         plantas = getPlantasOrdenadas(1, plantas);
         plantasCopia = plantas;
+        console.log(plantas);
         setPlantas(plantas);
     }
 
@@ -131,8 +141,8 @@ const Galeria = () => {
                             className="form-control"
                             placeholder="Nombre de la planta..."
                             aria-label="Buscador"
-                            aria-describedby="inconoBuscador" 
-                            onKeyUp={e => buscarPlanta(e.target.value, e)}/>
+                            aria-describedby="inconoBuscador"
+                            onKeyUp={e => buscarPlanta(e.target.value, e)} />
                     </div>
                 </div>
             </div>
@@ -143,11 +153,12 @@ const Galeria = () => {
                         <div className="tarjeta card h-100">
                             <a id="enlacePlanta" href={"/planta/" + planta.id} style={{ textDecoration: "none" }}>
                                 <img
-                                    src={`http://127.0.0.1:8000/${planta.image}`}
-                                    className="card-img-top object-fit-scale rounded"
+                                    src={`http://127.0.0.1:8000/${planta.images[0].image}`}
+                                    className="p-2 card-img-top object-fit-scale rounded"
                                     alt={planta.name} height={"250"} />
-                                <div className="card-body">
-                                    <h5 className="card-title text-dark">{planta.name}</h5>
+                                <div className="card-body text-dark border-top" style={{whiteSpace: "pre"}}>
+                                    <h5><b>Nombre:</b>  {planta.name}</h5>
+                                    <h6><b>Categoria:</b>    {planta.category}</h6>
                                 </div>
                             </a>
                         </div>

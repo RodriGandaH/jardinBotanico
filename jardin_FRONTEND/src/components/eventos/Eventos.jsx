@@ -65,14 +65,14 @@ const Eventos = () => {
                 </div>
             </div>
             {eventos.map(evento => (
-                <div className="row border mb-4" key={evento.id}>
-                    <div className={"d-flex " + getFlexDirection()}>
+                <div className="col-md-12 border mb-4" key={evento.id}>
+                    <div className={"d-flex my-3 " + getFlexDirection()}>
                         <div className="d-flex col-md-4 col-ms-12 justify-content-center align-items-center">
-                            <div className="d-flex align-items-center mx-2" style={{ height: "275px" }}>
+                            <div className="d-flex align-items-center mx-2" style={{ height: "280px", width: "280px" }}>
                                 <Carrusel imagenes={evento.images} />
                             </div>
                         </div>
-                        <div className={"col-md-8 col-ms-12 my-2 " + getBorder()}>
+                        <div className={"col-md-8 col-ms-12 " + getBorder()}>
                             <div className={"mt-2 mx-3"}>
                                 <h4>{evento.name}</h4>
                                 <h5>Se llevara a cabo el {dayjs(evento.date).format("DD-MM-YYYY")} a horas {evento.time.substring(0, 5)} </h5>

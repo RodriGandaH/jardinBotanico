@@ -8,7 +8,7 @@ const Carrusel = ({ imagenes }) => {
 
     return (
         <>
-            <div id={idCarrusel} className="carousel slide" style={{ height: "100%" }}>
+            <div id={idCarrusel} className="carousel slide" style={{ height: "100%", width: "100%" }}>
                 <div className="carousel-indicators">
                     {imagenes.map(imagen => {
                         return (
@@ -24,17 +24,17 @@ const Carrusel = ({ imagenes }) => {
                         );
                     })}
                 </div>
-                <div className="carousel-inner" style={{ height: "100%" }}>
+                <div className="carousel-inner" style={{ height: "100%", width: "100%" }}>
                     {imagenes.map(imagen => (
                         <div
                             className={"carousel-item " + (imagen.id === idPrimeraImagen ? "active" : "")}
                             key={imagen.id}
                             style={{ height: "100%" }}
                         >
-                            <div className="d-flex align-items-center" style={{ height: "100%" }}>
+                            <div className="d-flex align-items-center" style={{ height: "100%"}}>
                                 <img
                                     src={`http://127.0.0.1:8000/${imagen.image}`}
-                                    className="object-fit-scale rounded"
+                                    className="d-block"
                                     style={{ maxHeight: "100%", maxWidth: "100%" }}
                                 />
                             </div>

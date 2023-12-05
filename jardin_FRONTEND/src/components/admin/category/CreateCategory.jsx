@@ -49,6 +49,7 @@ function CreateCategory({ onUpdate, categories }) {
     }
 
     const nombreCategoriaValido = (nombreCategoria) => {
+        nombreCategoria = nombreCategoria.trim();
         let valido = nombreCategoria != "";
         if (valido) {
             categories.map(category => {
