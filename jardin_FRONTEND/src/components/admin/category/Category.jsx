@@ -64,6 +64,7 @@ function Category() {
                                     <EditCategory
                                         category={category}
                                         onUpdate={fetchCategories}
+                                        categories={categories}
                                     />
                                 </div>
                                 <div className="mx-2">
