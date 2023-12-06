@@ -15,7 +15,7 @@ function DeleteEvent({ event: evento, onUpdate }) {
             );
 
             console.log('Evento eliminado');
-            $('#deleteEventModal').modal('hide');
+            $(`#deleteEventModal-${evento.id}`).modal('hide');
             onUpdate();
         } catch (error) {
             console.log('Error al eliminar el evento:', error);
@@ -26,14 +26,14 @@ function DeleteEvent({ event: evento, onUpdate }) {
         <div>
             <button
                 data-bs-toggle="modal"
-                data-bs-target="#deleteEventModal"
+                data-bs-target={`#deleteEventModal-${evento.id}`}
                 className="btn btn-danger mx-1"
             >
                 Eliminar
             </button>
             <div
                 className="modal fade"
-                id="deleteEventModal"
+                id={`deleteEventModal-${evento.id}`}
                 tabIndex="-1"
                 aria-labelledby="deleteEventModalLabel"
                 aria-hidden="true"

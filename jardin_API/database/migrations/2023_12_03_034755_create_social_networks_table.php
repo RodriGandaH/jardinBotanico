@@ -11,7 +11,7 @@ class CreateSocialNetworksTable extends Migration
         Schema::create('social_networks', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
-            $table->string('url')->unique();
+            $table->string('data')->unique();
             $table->timestamps();
         });
     }

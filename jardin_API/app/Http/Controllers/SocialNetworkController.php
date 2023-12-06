@@ -19,7 +19,7 @@ class SocialNetworkController extends Controller
         try {
             $request->validate([
                 'name' => 'required|unique:social_networks',
-                'url' => 'required|unique:social_networks',
+                'data' => 'required|unique:social_networks',
             ]);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 400);
@@ -53,7 +53,7 @@ class SocialNetworkController extends Controller
         try {
             $request->validate([
                 'name' => 'required|unique:social_networks,name,' . $id,
-                'url' => 'required|unique:social_networks,url,' . $id,
+                'data' => 'required|unique:social_networks,data,' . $id,
             ]);
         } catch (ValidationException $e) {
             return response()->json(['error' => $e->errors()], 400);

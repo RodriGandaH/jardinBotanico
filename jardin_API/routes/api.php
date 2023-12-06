@@ -23,6 +23,8 @@ Route::group(['middleware' => ['cors']], function () {
     Route::get('plants/{id}', [PlantController::class, 'show']);
 
     Route::get('/categories/{categoryName}/plants/{plantId}', [CategoryController::class, 'showPlant']);
+    Route::get('/networks', [SocialNetworkController::class, 'index']);
+    Route::get('/networks/{id}', [SocialNetworkController::class, 'show']);
 });
 
 Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
@@ -44,9 +46,9 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
     Route::delete('/plants/images/{id}', [PlantController::class, 'destroyImage']);
     Route::delete('/plants/medicinalProperties/{id}', [PlantController::class, 'deleteMedicinalProperty']);
 
-    Route::get('/networks', [SocialNetworkController::class, 'index']);
+
     Route::post('/networks', [SocialNetworkController::class, 'store']);
-    Route::get('/networks/{id}', [SocialNetworkController::class, 'show']);
+
     Route::put('/networks/{id}', [SocialNetworkController::class, 'update']);
     Route::delete('/networks/{id}', [SocialNetworkController::class, 'destroy']);
 });

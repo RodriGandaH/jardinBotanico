@@ -1,22 +1,21 @@
-import React from 'react';
 import axios from 'axios';
 
-function DeletePlant({ plant, onUpdate }) {
+function Deleteinf({ inf, onUpdate }) {
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
 
         try {
-            await axios.delete(`http://127.0.0.1:8000/api/plants/${plant.id}`, {
+            await axios.delete(`http://127.0.0.1:8000/api/networks/${inf.id}`, {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
 
-            console.log('Planta eliminada');
-            $(`#deletePlantModal-${plant.id}`).modal('hide');
+            console.log('infrmación eliminada: ', inf.name);
+            $(`#deleteinfModal-${inf.id}`).modal('hide');
             onUpdate();
         } catch (error) {
-            console.log('Error al eliminar la planta:', error);
+            console.log('Error al eliminar la infrmación:', error);
         }
     };
 
@@ -24,16 +23,16 @@ function DeletePlant({ plant, onUpdate }) {
         <div>
             <button
                 data-bs-toggle="modal"
-                data-bs-target={`#deletePlantModal-${plant.id}`}
+                data-bs-target={`#deleteinfModal-${inf.id}`}
                 className="btn btn-danger mx-1"
             >
                 Eliminar
             </button>
             <div
                 className="modal fade"
-                id={`deletePlantModal-${plant.id}`}
+                id={`deleteinfModal-${inf.id}`}
                 tabIndex="-1"
-                aria-labelledby="deletePlantModalLabel"
+                aria-labelledby="deleteinfModalLabel"
                 aria-hidden="true"
             >
                 <div className="modal-dialog">
@@ -41,9 +40,9 @@ function DeletePlant({ plant, onUpdate }) {
                         <div className="modal-header">
                             <h5
                                 className="modal-title"
-                                id="deletePlantModalLabel"
+                                id="deleteinfModalLabel"
                             >
-                                Eliminar planta
+                                Eliminar infrmación
                             </h5>
                             <button
                                 type="button"
@@ -55,7 +54,7 @@ function DeletePlant({ plant, onUpdate }) {
                         <div className="modal-body">
                             <p>
                                 ¿Estás seguro de que quieres eliminar esta
-                                planta?
+                                infrmación?
                             </p>
                         </div>
                         <div className="modal-footer">
@@ -80,4 +79,4 @@ function DeletePlant({ plant, onUpdate }) {
     );
 }
 
-export default DeletePlant;
+export default Deleteinf;

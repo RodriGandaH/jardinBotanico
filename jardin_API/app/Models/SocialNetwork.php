@@ -13,6 +13,6 @@ class SocialNetwork extends Model
 
     protected $fillable = [
         'name',
-        'url',
+        'data',
     ];
 }
