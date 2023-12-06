@@ -18,7 +18,7 @@ class StorePlantRequest extends FormRequest
             'name' => 'required|unique:plants,name',
             'description' => 'required',
 
-            'category_id' => 'required|exists:categories,id',
+            'category_id' => 'nullable|exists:categories,id',
         ];
     }
 }

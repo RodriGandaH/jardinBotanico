@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-function EditEvent({ event: evento, onUpdate, id }) {
+function EditEvent({ event: evento, onUpdate }) {
     const [name, setName] = useState(evento.name);
     const [date, setDate] = useState(evento.date);
     const [time, setTime] = useState(evento.time);
     const [description, setDescription] = useState(evento.description);
     const [newImages, setNewImages] = useState([]);
-    const [images, setImages] = useState([]);
     const [previewImages, setPreviewImages] = useState(
         evento.images.map((image) => {
             const url = `http://127.0.0.1:8000/${image.image}`;
@@ -15,18 +14,25 @@ function EditEvent({ event: evento, onUpdate, id }) {
         })
     );
 
+    const [deletedImageIds, setDeletedImageIds] = useState([]);
+
     useEffect(() => {
-        const modal = document.getElementById(`editEventModal-${id}`);
-        $(modal).on('hidden.bs.modal', function () {
-            // Actualiza el estado en lugar de recargar la página
+        const modal = document.getElementById(`editEventModal-${evento.id}`);
+        $(modal).on('hidden.bs.modal', async function () {
+            // Se esta usando get porque no encontre como hacer que vuelva a como estaban la vista previa de imagenes despues de cerrar si esque elimino pero no guardo
+            const response = await axios.get(
+                `http://127.0.0.1:8000/api/events/${evento.id}`
+            );
+
+            const updatedEvento = response.data;
             setName(evento.name);
             setDate(evento.date);
             setTime(evento.time);
             setDescription(evento.description);
             setNewImages([]);
-            setImages([]);
+            setDeletedImageIds([]);
             setPreviewImages(
-                evento.images.map((image) => {
+                updatedEvento.images.map((image) => {
                     const url = `http://127.0.0.1:8000/${image.image}`;
                     return url;
                 })
@@ -46,34 +52,33 @@ function EditEvent({ event: evento, onUpdate, id }) {
             ),
         ]);
     };
-
-    const handleDelete = async (i) => {
+    const handleDelete = (i) => {
         if (i < evento.images.length) {
             const image = evento.images[i];
             if (image && image.id) {
-                const token = localStorage.getItem('token');
-                try {
-                    await axios.delete(
-                        `http://127.0.0.1:8000/api/events/images/${image.id}`,
-                        {
-                            headers: {
-                                Authorization: `Bearer ${token}`,
-                            },
-                        }
-                    );
-                    console.log('Imagen eliminada');
-                } catch (error) {
-                    console.log('Error al eliminar la imagen:', error);
-                }
+                setDeletedImageIds((prevDeletedImageIds) => [
+                    ...prevDeletedImageIds,
+                    image.id,
+                ]);
+                console.log(
+                    `Programado para eliminar la imagen con ID ${image.id}`
+                );
+
+                const newEventoImages = evento.images.filter(
+                    (_, index) => index !== i
+                );
+                evento.images = newEventoImages;
             }
-        } else {
+        }
+
+        setPreviewImages(previewImages.filter((_, index) => index !== i));
+
+        if (i >= evento.images.length) {
             const newImageIndex = i - evento.images.length;
             setNewImages(
                 newImages.filter((_, index) => index !== newImageIndex)
             );
         }
-
-        setPreviewImages(previewImages.filter((_, index) => index !== i));
     };
 
     const handleSubmit = async (event) => {
@@ -86,7 +91,6 @@ function EditEvent({ event: evento, onUpdate, id }) {
         formData.append('time', time);
         formData.append('description', description);
         newImages.forEach((image, i) => {
-            // Itera sobre newImages en lugar de images
             if (image instanceof File) {
                 formData.append(`images[${i}]`, image);
             }
@@ -103,7 +107,22 @@ function EditEvent({ event: evento, onUpdate, id }) {
                 }
             );
 
-            $(`#editEventModal-${id}`).modal('hide');
+            for (const id of deletedImageIds) {
+                try {
+                    await axios.delete(
+                        `http://127.0.0.1:8000/api/events/images/${id}`,
+                        {
+                            headers: {
+                                Authorization: `Bearer ${token}`,
+                            },
+                        }
+                    );
+                } catch (error) {
+                    console.log(`Error al eliminar la imagen ${id}:`, error);
+                }
+            }
+
+            $(`#editEventModal-${evento.id}`).modal('hide');
 
             onUpdate();
         } catch (error) {
@@ -126,7 +145,7 @@ function EditEvent({ event: evento, onUpdate, id }) {
 
             <div
                 className="modal fade"
-                id={`editEventModal-${id}`}
+                id={`editEventModal-${evento.id}`}
                 tabIndex="-1"
                 aria-labelledby="editEventModalLabel"
                 aria-hidden="true"
@@ -239,7 +258,7 @@ function EditEvent({ event: evento, onUpdate, id }) {
                                             onClick={() =>
                                                 document
                                                     .getElementById(
-                                                        `eventImages-${id}`
+                                                        `eventImages-${evento.id}`
                                                     )
                                                     .click()
                                             }
@@ -252,7 +271,7 @@ function EditEvent({ event: evento, onUpdate, id }) {
                                                 <input
                                                     type="file"
                                                     className="form-control"
-                                                    id={`eventImages-${id}`}
+                                                    id={`eventImages-${evento.id}`}
                                                     onChange={handleImageChange}
                                                     accept=".jpeg,.jpg,.png,.gif,.svg"
                                                     multiple

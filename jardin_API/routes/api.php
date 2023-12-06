@@ -42,7 +42,7 @@ Route::group(['middleware' => ['auth:sanctum', 'cors']], function () {
     Route::post('plants/{id}', [PlantController::class, 'update']);
     Route::delete('plants/{id}', [PlantController::class, 'destroy']);
     Route::delete('/plants/images/{id}', [PlantController::class, 'destroyImage']);
-    Route::delete('/plants/medicinalProperties/{id}', [PlantController::class, 'destroyMedicinalProperty']);
+    Route::delete('/plants/medicinalProperties/{id}', [PlantController::class, 'deleteMedicinalProperty']);
 
     Route::get('/networks', [SocialNetworkController::class, 'index']);
     Route::post('/networks', [SocialNetworkController::class, 'store']);

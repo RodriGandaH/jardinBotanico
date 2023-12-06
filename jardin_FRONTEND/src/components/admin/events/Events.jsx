@@ -44,11 +44,7 @@ function Events() {
                             </p>
                         </div>
                         <div className="m-2 d-flex justify-content-end">
-                            <EditEvent
-                                event={event}
-                                onUpdate={handleUpdate}
-                                id={event.id}
-                            />
+                            <EditEvent event={event} onUpdate={handleUpdate} />
                             <DeleteEvent
                                 event={event}
                                 onUpdate={handleUpdate}

@@ -10,6 +10,7 @@ function Plants() {
     const fetchPlants = async () => {
         const response = await axios.get('http://127.0.0.1:8000/api/plants');
         setPlants(response.data);
+        console.log(response.data);
     };
 
     useEffect(() => {
@@ -42,7 +43,9 @@ function Plants() {
                             </p>
                             <p className="mb-0">
                                 <strong>Categoría:</strong>{' '}
-                                {plant.category.name}
+                                {plant.category
+                                    ? plant.category.name
+                                    : 'Sin categoría'}
                             </p>
                         </div>
                         <div className="m-2 d-flex justify-content-end">

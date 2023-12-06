@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-import Modal from 'react-modal';
 import axios from 'axios';
 
 function DeletePlant({ plant, onUpdate }) {
-    const [modalIsOpen, setModalIsOpen] = useState(false);
-
     const handleDelete = async () => {
         const token = localStorage.getItem('token');
 
@@ -16,7 +13,7 @@ function DeletePlant({ plant, onUpdate }) {
             });
 
             console.log('Planta eliminada');
-            setModalIsOpen(false);
+            $('#deletePlantModal').modal('hide');
             onUpdate();
         } catch (error) {
             console.log('Error al eliminar la planta:', error);
@@ -26,22 +23,59 @@ function DeletePlant({ plant, onUpdate }) {
     return (
         <div>
             <button
-                onClick={() => setModalIsOpen(true)}
+                data-bs-toggle="modal"
+                data-bs-target="#deletePlantModal"
                 className="btn btn-danger mx-1"
             >
                 Eliminar
             </button>
-            <Modal
-                isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
-                contentLabel="Eliminar planta"
+            <div
+                className="modal fade"
+                id="deletePlantModal"
+                tabIndex="-1"
+                aria-labelledby="deletePlantModalLabel"
+                aria-hidden="true"
             >
-                <p>¿Estás seguro de que quieres eliminar esta planta?</p>
-                <button onClick={handleDelete}>Sí, eliminar</button>
-                <button onClick={() => setModalIsOpen(false)}>
-                    No, cancelar
-                </button>
-            </Modal>
+                <div className="modal-dialog">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5
+                                className="modal-title"
+                                id="deletePlantModalLabel"
+                            >
+                                Eliminar planta
+                            </h5>
+                            <button
+                                type="button"
+                                className="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            ></button>
+                        </div>
+                        <div className="modal-body">
+                            <p>
+                                ¿Estás seguro de que quieres eliminar esta
+                                planta?
+                            </p>
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                No, cancelar
+                            </button>
+                            <button
+                                onClick={handleDelete}
+                                className="btn btn-danger"
+                            >
+                                Sí, eliminar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-
 import axios from 'axios';
 
 function CreatePlant({ onUpdate }) {
@@ -10,6 +9,7 @@ function CreatePlant({ onUpdate }) {
     const [images, setImages] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [medicinalProperties, setMedicinalProperties] = useState([]);
 
     useEffect(() => {
         const fetchCategories = async () => {
@@ -30,6 +30,7 @@ function CreatePlant({ onUpdate }) {
             setCategory('');
             setImages([]);
             setPreviewImages([]);
+            setMedicinalProperties([]);
         });
     }, []);
 
@@ -42,11 +43,29 @@ function CreatePlant({ onUpdate }) {
             ),
         ]);
     };
+
     const removeImage = (index) => (event) => {
         event.preventDefault();
         setImages(images.filter((_, i) => i !== index));
         setPreviewImages(previewImages.filter((_, i) => i !== index));
     };
+
+    const handleMedicinalPropertyChange = (index) => (event) => {
+        const newMedicinalProperties = [...medicinalProperties];
+        newMedicinalProperties[index] = event.target.value;
+        setMedicinalProperties(newMedicinalProperties);
+    };
+
+    const addMedicinalProperty = () => {
+        setMedicinalProperties([...medicinalProperties, '']);
+    };
+
+    const removeMedicinalProperty = (index) => () => {
+        setMedicinalProperties(
+            medicinalProperties.filter((_, i) => i !== index)
+        );
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
 
@@ -56,9 +75,17 @@ function CreatePlant({ onUpdate }) {
         formData.append('scientific_name', scientificName);
         formData.append('description', description);
         formData.append('category_id', parseInt(category));
+        medicinalProperties.forEach((property, i) => {
+            formData.append(`medicinal_properties[${i}]`, property);
+        });
         images.forEach((image, i) => {
             formData.append(`images[${i}]`, image);
         });
+        console.log('medi', medicinalProperties);
+        console.log('images', images);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
 
         try {
             const response = await axios.post(
@@ -180,6 +207,52 @@ function CreatePlant({ onUpdate }) {
                                     </select>
                                 </div>
                                 <div className="mb-3">
+                                    <label className="form-label">
+                                        Propiedades medicinales:
+                                    </label>
+                                </div>
+                                {medicinalProperties.map((property, index) => (
+                                    <div className="row mb-3" key={index}>
+                                        <div className="col-4">
+                                            <label
+                                                htmlFor={`medicinalProperty${index}`}
+                                                className="form-label"
+                                            >
+                                                Propiedad medicinal {index + 1}:
+                                            </label>
+                                            <div className="input-group">
+                                                <input
+                                                    type="text"
+                                                    className="form-control"
+                                                    id={`medicinalProperty${index}`}
+                                                    value={property}
+                                                    onChange={handleMedicinalPropertyChange(
+                                                        index
+                                                    )}
+                                                    required
+                                                />
+                                                <button
+                                                    className="btn btn-danger"
+                                                    type="button"
+                                                    onClick={removeMedicinalProperty(
+                                                        index
+                                                    )}
+                                                >
+                                                    <i className="bi bi-trash-fill"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+
+                                <button
+                                    type="button"
+                                    className="btn btn-dark mb-3"
+                                    onClick={addMedicinalProperty}
+                                >
+                                    Agregar
+                                </button>
+                                <div className="mb-3">
                                     <label
                                         htmlFor="plantDescription"
                                         className="form-label"
@@ -229,7 +302,6 @@ function CreatePlant({ onUpdate }) {
                                                     onChange={handleImageChange}
                                                     accept=".jpeg,.jpg,.png,.gif,.svg"
                                                     multiple
-                                                    required
                                                     style={{ display: 'none' }}
                                                 />
                                             </div>

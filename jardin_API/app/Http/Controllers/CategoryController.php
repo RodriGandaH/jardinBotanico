@@ -67,19 +67,23 @@ class CategoryController extends Controller
 
     public function destroy($id)
     {
-        $category = Category::find($id);
+        try {
+            $category = Category::find($id);
 
-        if ($category) {
-            foreach ($category->plants as $plant) {
-                $plant->category_id = 0;
-                $plant->save();
+            if ($category) {
+                foreach ($category->plants as $plant) {
+                    $plant->category_id = null;
+                    $plant->save();
+                }
+
+                $category->delete();
+
+                return response()->json(['message' => 'Categoría eliminada, las plantas asociadas ahora tienen category_id = 0'], 200);
+            } else {
+                return response()->json(['error' => 'Categoría no encontrada'], 404);
             }
-
-            $category->delete();
-
-            return response()->json(['message' => 'Categoría eliminada, las plantas asociadas ahora tienen category_id = 0'], 200);
-        } else {
-            return response()->json(['error' => 'Categoría no encontrada'], 404);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error del servidor: ' . $e->getMessage()], 500);
         }
     }
 

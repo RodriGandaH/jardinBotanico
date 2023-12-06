@@ -114,15 +114,29 @@ class PlantController extends Controller
                 }
             }
 
+            if ($request->has('medicinal_properties')) {
+                $plant->medicinalProperties()->delete(); // eliminar las propiedades medicinales existentes
+
+                foreach ($request->medicinal_properties as $property) {
+                    MedicinalProperty::create([
+                        'description' => $property,
+                        'plant_id' => $plant->id
+                    ]);
+                }
+            }
+
             $plant->save();
             $plant->load('category');
             $plant->load('images');
+            $plant->load('medicinalProperties');
 
             return response()->json($plant, 200);
         } else {
             return response()->json(['error' => 'Plant not found'], 404);
         }
     }
+
+
 
     public function destroy($id)
     {
@@ -138,14 +152,19 @@ class PlantController extends Controller
                 $image->delete();
             }
 
+            // Eliminar todas las propiedades medicinales asociadas
+            foreach ($plant->medicinalProperties as $property) {
+                $property->delete();
+            }
 
             $plant->delete();
 
-            return response()->json(['message' => 'Plant and associated images deleted']);
+            return response()->json(['message' => 'Plant and associated images and medicinal properties deleted']);
         } else {
             return response()->json(['error' => 'Plant not found'], 404);
         }
     }
+
 
     public function destroyImage($id)
     {

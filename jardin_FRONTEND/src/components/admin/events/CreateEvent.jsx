@@ -209,7 +209,6 @@ function CreateEvent({ onUpdate }) {
                                                     onChange={handleImageChange}
                                                     accept=".jpeg,.jpg,.png,.gif,.svg"
                                                     multiple
-                                                    required
                                                     style={{ display: 'none' }}
                                                 />
                                             </div>
