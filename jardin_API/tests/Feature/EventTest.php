@@ -6,6 +6,8 @@ use App\Http\Controllers\EventController;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
+use App\Models\EventImage;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -17,122 +19,107 @@ class EventControllerTest extends TestCase
 
     public function testIndex()
     {
-        // Crear eventos de prueba
-        $events = Event::factory()->count(3)->create();
 
-        // Crear una instancia del controlador
-        $controller = new EventController();
+        $user = User::factory()->create();
+        $events = Event::factory()->count(5)->create()->each(function ($event) {
+            EventImage::factory()->count(2)->create(['event_id' => $event->id]);
+        });
 
-        // Llamar al método index y obtener la respuesta
-        $response = $controller->index();
 
-        // Asegurarse de que la respuesta tiene un estado 200
-        $this->assertEquals(200, $response->getStatusCode());
+        $response = $this->actingAs($user)->getJson('api/events');
 
-        // Asegurarse de que la respuesta incluye todos los eventos
-        $this->assertCount(3, $response->getData(true));
+
+        $response->assertStatus(200);
+        $response->assertJsonCount(5, $key = null);
     }
 
     public function testStore()
     {
-        // Crear una imagen de prueba
-        $image = UploadedFile::fake()->image('EventoNavideño.jpg');
 
-        // Crear una solicitud de prueba
-        $request = new StoreEventRequest();
-        $request->replace([
-            'name' => 'EventoNavideño',
+        $user = User::factory()->create();
+        $eventData = [
+            'name' => 'New Event',
             'date' => '2023-12-31',
             'time' => '12:00:00',
-            'image' => $image,
-            'description' => 'EventoNavideño',
+            'description' => 'This is a new event.',
+            'images' => [UploadedFile::fake()->image('img1.jpg'), UploadedFile::fake()->image('img2.jpg')]
+        ];
+
+
+        $response = $this->actingAs($user)->postJson('api/events', $eventData);
+
+
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('events', [
+            'name' => 'New Event',
+            'date' => '2023-12-31',
+            'time' => '12:00:00',
+            'description' => 'This is a new event.',
         ]);
-
-        // Crear una instancia del controlador
-        $controller = new EventController();
-
-        // Llamar al método store y obtener la respuesta
-        $response = $controller->store($request);
-
-        // Asegurarse de que la respuesta tiene un estado 201
-        $this->assertEquals(201, $response->getStatusCode());
-
-        // Asegurarse de que la respuesta incluye el evento creado
-        $this->assertEquals('EventoNavideño', $response->getData(true)['name']);
-        $this->assertEquals('2023-12-31', $response->getData(true)['date']);
-        $this->assertEquals('12:00:00', $response->getData(true)['time']);
-        $this->assertEquals('EventoNavideño', $response->getData(true)['description']);
-        $this->assertNotNull($response->getData(true)['image']);
+        $this->assertCount(1, Event::all());
     }
+
 
     public function testShow()
     {
-        // Crear un evento de prueba
+
         $event = Event::factory()->create();
 
-        // Crear una instancia del controlador
+
         $controller = new EventController();
 
-        // Llamar al método show y obtener la respuesta
+
         $response = $controller->show($event->id);
 
-        // Asegurarse de que la respuesta tiene un estado 200
+
         $this->assertEquals(200, $response->getStatusCode());
 
-        // Asegurarse de que la respuesta incluye el evento
+
         $this->assertEquals($event->id, $response->getData(true)['id']);
     }
 
     public function testUpdate()
     {
-        // Crear un evento de prueba
+
+        $user = User::factory()->create();
         $event = Event::factory()->create();
 
-        // Crear una imagen de prueba
-        $image = UploadedFile::fake()->image('EventoNavideño2.jpg');
+        $updatedEventData = [
+            'name' => 'Updated Event',
+            'date' => '2024-01-01',
+            'time' => '13:00:00',
+            'description' => 'This is an updated event.',
+            'images' => [UploadedFile::fake()->image('updated_img1.jpg'), UploadedFile::fake()->image('updated_img2.jpg')]
+        ];
 
-        // Crear una solicitud de prueba
-        $request = new UpdateEventRequest();
-        $request->replace([
-            'name' => 'EventoNavideño2',
-            'date' => '2024-02-01',
-            'time' => '14:00:00',
-            'image' => $image,
-            'description' => 'EventoNavideño2',
+
+        $response = $this->actingAs($user)->postJson("api/events/{$event->id}", $updatedEventData);
+
+
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('events', [
+            'id' => $event->id,
+            'name' => 'Updated Event',
+            'date' => '2024-01-01',
+            'time' => '13:00:00',
+            'description' => 'This is an updated event.',
         ]);
-
-        // Crear una instancia del controlador
-        $controller = new EventController();
-
-        // Llamar al método update y obtener la respuesta
-        $response = $controller->update($request, $event->id);
-
-        // Asegurarse de que la respuesta tiene un estado 200
-        $this->assertEquals(200, $response->getStatusCode());
-
-        // Asegurarse de que la respuesta incluye el evento actualizado
-        $this->assertEquals('EventoNavideño2', $response->getData(true)['name']);
-        $this->assertEquals('2024-02-01', $response->getData(true)['date']);
-        $this->assertEquals('14:00:00', $response->getData(true)['time']);
-        $this->assertEquals('EventoNavideño2', $response->getData(true)['description']);
-        $this->assertNotNull($response->getData(true)['image']);
     }
-
     public function testDestroy()
     {
-        // Crear un evento de prueba
+
         $event = Event::factory()->create();
 
-        // Crear una instancia del controlador
+
         $controller = new EventController();
 
-        // Llamar al método destroy y obtener la respuesta
+
         $response = $controller->destroy($event->id);
 
-        // Asegurarse de que la respuesta tiene un estado 200
+
         $this->assertEquals(200, $response->getStatusCode());
 
-        // Asegurarse de que el evento fue eliminado
+
         $this->assertDeleted($event);
     }
 }

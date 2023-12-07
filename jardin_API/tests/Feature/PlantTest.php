@@ -7,6 +7,8 @@ use App\Http\Requests\StorePlantRequest;
 use App\Http\Requests\UpdatePlantRequest;
 use App\Models\Category;
 use App\Models\Plant;
+use App\Models\User;
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
@@ -18,122 +20,95 @@ class PlantControllerTest extends TestCase
 
     public function testIndex()
     {
-        // Crear plantas de prueba
+
         $plants = Plant::factory()->count(3)->create();
 
-        // Crear una instancia del controlador
+
         $controller = new PlantController();
 
-        // Llamar al método index y obtener la respuesta
+
         $response = $controller->index();
 
-        // Asegurarse de que la respuesta tiene un estado 200
+
         $this->assertEquals(200, $response->getStatusCode());
 
-        // Asegurarse de que la respuesta incluye todas las plantas
         $this->assertCount(3, $response->getData(true));
     }
 
     public function testStore()
     {
-        // Crear una categoría de prueba
+        $user = User::factory()->create();
         $category = Category::factory()->create();
+        $plantData = [
+            'name' => 'Rose',
+            'scientific_name' => 'Rosa',
+            'description' => 'A rose is a woody perennial flowering plant.',
+            'category_id' => $category->id,
+            'medicinal_properties' => ['Helps with digestion', 'Improves skin health'],
+            'images' => ['img1.jpg', 'img2.jpg']
+        ];
 
-        // Crear una imagen de prueba
-        $image = UploadedFile::fake()->image('testplant.jpg');
+        $response = $this->actingAs($user)->postJson('api/plants', $plantData);
 
-        // Crear una solicitud de prueba
-        $request = new StorePlantRequest();
-        $request->replace([
-            'name' => 'testplant',
-            'scientific_name' => 'testplant',
-            'description' => 'testplant',
-            'image' => $image,
+        $response->assertStatus(201);
+        $this->assertDatabaseHas('plants', [
+            'name' => 'Rose',
+            'scientific_name' => 'Rosa',
+            'description' => 'A rose is a woody perennial flowering plant.',
             'category_id' => $category->id,
         ]);
-
-        // Crear una instancia del controlador
-        $controller = new PlantController();
-
-        // Llamar al método store y obtener la respuesta
-        $response = $controller->store($request);
-
-        // Asegurarse de que la respuesta tiene un estado 201
-        $this->assertEquals(201, $response->getStatusCode());
-
-        // Asegurarse de que la respuesta incluye la planta creada
-        $this->assertEquals('testplant', $response->getData(true)['name']);
-        $this->assertEquals('testplant', $response->getData(true)['scientific_name']);
-        $this->assertEquals('testplant', $response->getData(true)['description']);
-        $this->assertEquals($category->id, $response->getData(true)['category_id']);
-        $this->assertNotNull($response->getData(true)['image']);
+        $this->assertCount(1, Plant::all());
     }
 
     public function testShow()
     {
-        // Crear una planta de prueba
         $plant = Plant::factory()->create();
 
-        // Crear una instancia del controlador
         $controller = new PlantController();
 
-        // Llamar al método show y obtener la respuesta
         $response = $controller->show($plant->id);
 
-        // Asegurarse de que la respuesta tiene un estado 200
         $this->assertEquals(200, $response->getStatusCode());
 
-        // Asegurarse de que la respuesta incluye la planta
         $this->assertEquals($plant->id, $response->getData(true)['id']);
     }
 
     public function testUpdate()
     {
-        // Crear una planta de prueba
-        $plant = Plant::factory()->create();
+        $user = User::factory()->create();
+        $category = Category::factory()->create();
+        $plant = Plant::factory()->create(['category_id' => $category->id]);
 
-        // Crear una solicitud de prueba
-        $request = new UpdatePlantRequest();
-        $request->replace([
-            'name' => 'newname',
-            'scientific_name' => 'newname',
-            'description' => 'newname',
-            'image' => 'newname.jpg',
-            'category_id' => $plant->category_id,
+        $updatedPlantData = [
+            'name' => 'Updated Rose',
+            'scientific_name' => 'Updated Rosa',
+            'description' => 'An updated description.',
+            'category_id' => $category->id,
+            'medicinal_properties' => ['Updated property 1', 'Updated property 2'],
+            'images' => [UploadedFile::fake()->image('updated_img1.jpg'), UploadedFile::fake()->image('updated_img2.jpg')]
+        ];
+
+        $response = $this->actingAs($user)->postJson("api/plants/{$plant->id}", $updatedPlantData);
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('plants', [
+            'id' => $plant->id,
+            'name' => 'Updated Rose',
+            'scientific_name' => 'Updated Rosa',
+            'description' => 'An updated description.',
+            'category_id' => $category->id,
         ]);
-
-        // Crear una instancia del controlador
-        $controller = new PlantController();
-
-        // Llamar al método update y obtener la respuesta
-        $response = $controller->update($request, $plant->id);
-
-        // Asegurarse de que la respuesta tiene un estado 201
-        $this->assertEquals(201, $response->getStatusCode());
-
-        // Asegurarse de que la respuesta incluye la planta actualizada
-        $this->assertEquals('newname', $response->getData(true)['name']);
-        $this->assertEquals('newname', $response->getData(true)['scientific_name']);
-        $this->assertEquals('newname', $response->getData(true)['description']);
-        $this->assertEquals($plant->category_id, $response->getData(true)['category_id']);
-        $this->assertNotNull($response->getData(true)['image']);
     }
 
     public function testDestroy()
     {
-        // Crear una planta de prueba
         $plant = Plant::factory()->create();
 
-        // Crear una instancia del controlador
         $controller = new PlantController();
 
-        // Llamar al método destroy y obtener la respuesta
         $response = $controller->destroy($plant->id);
 
-        // Asegurarse de que la respuesta tiene un estado 200
         $this->assertEquals(200, $response->getStatusCode());
 
-        // Asegurarse de que la planta ha sido eliminada
         $this->assertNull(Plant::find($plant->id));
     }
 }
