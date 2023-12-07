@@ -77,7 +77,7 @@ function CreateInfo({ onUpdate, info }) {
                     <div className="modal-content">
                         <div className="modal-header">
                             <h1
-                                className="modal-title"
+                                className="modal-title fs-5"
                                 id="createInfoModalLabel"
                             >
                                 Crear informacion

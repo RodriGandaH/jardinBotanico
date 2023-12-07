@@ -235,7 +235,7 @@ function EditPlant({ plant, onUpdate }) {
                 data-bs-toggle="modal"
                 data-bs-target={`#editPlantModal-${plant.id}`}
             >
-                Editar planta
+                Editar
             </button>
 
             <div
@@ -462,7 +462,7 @@ function EditPlant({ plant, onUpdate }) {
                                     </div>
                                 </div>
                             </div>
-                            <div className="modal-footer d-flex justify-content-between">
+                            <div className="modal-footer">
                                 <button
                                     type="button"
                                     className="btn btn-secondary"

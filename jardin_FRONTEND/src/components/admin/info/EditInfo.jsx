@@ -92,8 +92,11 @@ function Editinf({ onUpdate, inf }) {
                 <div className="modal-dialog">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h1 className="modal-title" id="editinfModalLabel">
-                                Editar infrmacion
+                            <h1
+                                className="modal-title fs-5"
+                                id="editinfModalLabel"
+                            >
+                                Editar informacion
                             </h1>
                             <button
                                 type="button"
@@ -105,7 +108,7 @@ function Editinf({ onUpdate, inf }) {
                         <form onSubmit={handleSubmit}>
                             <div className="modal-body">
                                 <label htmlFor="name" className="form-label">
-                                    infrmacion:
+                                    informacion:
                                 </label>
                                 <select
                                     name="inf"

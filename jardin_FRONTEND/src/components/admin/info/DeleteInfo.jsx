@@ -11,11 +11,11 @@ function Deleteinf({ inf, onUpdate }) {
                 },
             });
 
-            console.log('infrmación eliminada: ', inf.name);
+            console.log('información eliminada: ', inf.name);
             $(`#deleteinfModal-${inf.id}`).modal('hide');
             onUpdate();
         } catch (error) {
-            console.log('Error al eliminar la infrmación:', error);
+            console.log('Error al eliminar la información:', error);
         }
     };
 
@@ -42,7 +42,7 @@ function Deleteinf({ inf, onUpdate }) {
                                 className="modal-title"
                                 id="deleteinfModalLabel"
                             >
-                                Eliminar infrmación
+                                Eliminar información
                             </h5>
                             <button
                                 type="button"
@@ -54,7 +54,7 @@ function Deleteinf({ inf, onUpdate }) {
                         <div className="modal-body">
                             <p>
                                 ¿Estás seguro de que quieres eliminar esta
-                                infrmación?
+                                información?
                             </p>
                         </div>
                         <div className="modal-footer">
