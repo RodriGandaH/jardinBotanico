@@ -3,28 +3,56 @@ import axios from 'axios';
 import CreateEvent from './CreateEvent';
 import EditEvent from './EditEvent';
 import DeleteEvent from './DeleteEvent';
-
+let eventsCopy;
 function Events() {
     const [events, setEvents] = useState([]);
 
     const fetchEvents = async () => {
         const response = await axios.get('http://127.0.0.1:8000/api/events');
+        eventsCopy = [...response.data];
         setEvents(response.data);
     };
 
     useEffect(() => {
         fetchEvents();
     }, []);
-
-    const handleUpdate = () => {
-        fetchEvents();
+    const buscarEvento = (eventoBuscado, e) => {
+        let eventosFiltrados = [];
+        let origenFiltrado =
+            e.key === 'Backspace' ? [...eventsCopy] : [...events];
+        eventosFiltrados = origenFiltrado.filter((evento) => {
+            let nombre = evento.name.toLowerCase();
+            eventoBuscado = eventoBuscado.toLowerCase();
+            return nombre.includes(eventoBuscado);
+        });
+        setEvents(eventosFiltrados);
     };
 
     return (
         <>
             <h1 className="mb-4">Eventos</h1>
-
-            <CreateEvent onUpdate={handleUpdate} />
+            <div className="row mt-4">
+                <div className="col-md-6">
+                    <CreateEvent onUpdate={fetchEvents} />
+                </div>
+                <div className="col-md-6">
+                    <div className="input-group mb-3">
+                        <span
+                            className="input-group-text bi bi-search"
+                            id="inconoBuscador"
+                        ></span>
+                        <input
+                            id="buscadorEventos"
+                            type="text"
+                            className="form-control"
+                            placeholder="Buscar evento..."
+                            aria-label="Buscador"
+                            aria-describedby="inconoBuscador"
+                            onKeyUp={(e) => buscarEvento(e.target.value, e)}
+                        />
+                    </div>
+                </div>
+            </div>
             {events.length > 0 ? (
                 events.map((event) => (
                     <div key={event.id} className="card mb-3">
@@ -44,11 +72,8 @@ function Events() {
                             </p>
                         </div>
                         <div className="m-2 d-flex justify-content-end">
-                            <EditEvent event={event} onUpdate={handleUpdate} />
-                            <DeleteEvent
-                                event={event}
-                                onUpdate={handleUpdate}
-                            />
+                            <EditEvent event={event} onUpdate={fetchEvents} />
+                            <DeleteEvent event={event} onUpdate={fetchEvents} />
                         </div>
                     </div>
                 ))
