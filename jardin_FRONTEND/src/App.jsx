@@ -26,14 +26,18 @@ function App() {
     }
 
     return (
-        <>
+        <div style={{
+            display: "flex",
+            flexDirection: "column",
+            height: "100vh"
+        }}>
             <Navbar isAdmin={auth.user} />
             <main
-                className="flex-shrink-0 container"
+                className="container"
                 style={{
                     marginTop: '75px',
-                    marginBottom: '15px',
-                    minHeight: '91vh',
+                    marginBottom: '20px',
+                    flex: "1 0 auto"
                 }}
             >
                 <Router>
@@ -83,7 +87,7 @@ function App() {
                 </Router>
             </main>
             <Footer />
-        </>
+        </div>
     );
 }
 

@@ -25,7 +25,7 @@ const Planta = () => {
         <>
           <h3 className="text-center">{planta.name}</h3>
           <div className="d-flex justify-content-center">
-            <Carrusel imagenes={planta.images} />
+            <Carrusel imagenes={planta.images} height={"400px"} heightCont={"450px"} width={"600px"} />
           </div>
           <h4 className="text-center mt-2 border-bottom pb-3">
             Nombre científico: <i>{planta.scientific_name}</i>

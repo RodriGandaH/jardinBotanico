@@ -1,15 +1,14 @@
-import { offset } from '@popperjs/core';
 import './Carrusel.css';
 
-const Carrusel = ({ imagenes }) => {
+const Carrusel = ({ imagenes, height, heightCont, width }) => {
 
     const idPrimeraImagen = imagenes[0].id;
     let nroSlide = 0;
-    const idCarrusel = "carruselEvento" + imagenes[0].event_id;
+    const idCarrusel = "carruselEvento" + imagenes[0].id;
 
     return (
         <>
-            <div id={idCarrusel} className="carousel slide">
+            <div id={idCarrusel} className="carousel slide" style={{maxWidth: width}}>
                 <div className="carousel-indicators">
                     {imagenes.map(imagen => {
                         return (
@@ -25,18 +24,17 @@ const Carrusel = ({ imagenes }) => {
                         );
                     })}
                 </div>
-                <div className="carousel-inner" style={{maxWidth: "600px"}}>
+                <div className="carousel-inner" style={{maxWidth: width}}>
                     {imagenes.map(imagen => (
                         <div
                             className={"carousel-item " + (imagen.id === idPrimeraImagen ? "active" : "")}
                             key={imagen.id}
                         >
-                            <div className="d-flex align-items-center justify-content-center" style={{ height: "450px", width: "600px"}}>
+                            <div className="d-flex align-items-center justify-content-center" style={{ height: heightCont, width: width}}>
                                 <img
-                                    id='imagen'
-                                    src={`http://127.0.0.1:8000/${imagen.image}`}
-                                    className="d-block"
-                                    style={{ maxHeight: "400px", maxWidth: "600px" }}
+                                    src={imagen.local ? imagen.image :`http://127.0.0.1:8000/${imagen.image}`}
+                                    className="d-block rounded"
+                                    style={{ maxHeight: height, maxWidth: width }}
                                 />
                             </div>
                         </div>
