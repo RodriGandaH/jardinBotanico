@@ -48,13 +48,13 @@ describe('Tests galeria', () => {
             let fakeData = [
                 {
                     id: 1, name: "Arboles", plants: [
-                        { id: 1, image: "", name: "Palta" },
-                        { id: 2, image: "", name: "Limon" }]
+                        { id: 1, images: [{image: ""}], name: "Palta" },
+                        { id: 2, images: [{image: ""}], name: "Limon" }]
                 },
                 {
                     id: 2, name: "Arbustos", plants: [
-                        { id: 3, image: "", name: "Arbusto1" },
-                        { id: 4, image: "", name: "Arbusto2" }]
+                        { id: 3, images: [{image: ""}], name: "Arbusto1" },
+                        { id: 4, images: [{image: ""}], name: "Arbusto2" }]
                 }];
             await act(() => Promise.resolve(
                 axios.get

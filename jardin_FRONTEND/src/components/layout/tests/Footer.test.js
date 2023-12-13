@@ -1,86 +1,82 @@
-import { render, screen } from '@testing-library/react';
+import { render, act, waitFor } from '@testing-library/react';
 import Footer from '../Footer';
 import axios from 'axios';
-import AxiosMockAdapter from 'axios-mock-adapter';
 
-const mock = new AxiosMockAdapter(axios);
+jest.mock('axios');
 
 describe('Footer', () => {
 
     describe('Carga de RRSS', () => {
 
-        afterEach(() => {
-            mock.reset();
+        test('Carga de todas las RRSS', async () => {
+            let fakeData = [
+                { id: 1, name: "Facebook", data: "https://www.facebook.com/profile.php?id=100078017859101" },
+                { id: 2, name: "Twitter", data: "https://www.facebook.com/profile.php?id=100078017859101" },
+                { id: 3, name: "Instagram", data: "https://www.facebook.com/profile.php?id=100078017859101" },
+            ];
+            await act(() => Promise.resolve(
+                axios.get
+                    .mockResolvedValueOnce(
+                        { data: fakeData }
+                    )));
+            const { container } = render(<Footer />);
+            await waitFor(() => {
+                expect(axios.get).toHaveBeenCalledWith('http://127.0.0.1:8000/api/networks');
+                let element = container.getElementsByTagName("section")[1];
+                let nroRRSS = element.getElementsByTagName("i");
+                expect(nroRRSS.length).toBe(3);
+            })
         });
 
-        test('Carga fb', () => {
-            let fakeData = { facebook: 'https://www.google.com/', x: "", tiktok: "", instagram: "" };
-            mock.onGet("/users").reply(function (config) {
-                return [200, fakeData,];
-            });
+        test('Carga de ninguna RRSS', async () => {
+            let fakeData = [];
+            await act(() => Promise.resolve(
+                axios.get
+                    .mockResolvedValueOnce(
+                        { data: fakeData }
+                    )));
             const { container } = render(<Footer />);
-            let element = container.getElementsByTagName("section")[1];
-            let tag = element.getElementsByTagName("i")[0];
-            tag.getAttribute("href");
-            expect(element.getElementsByTagName("i").length === 1 && tag.getAttribute("href") === fakeData.facebook).toBeTruthy();
+            await waitFor(() => {
+                expect(axios.get).toHaveBeenCalledWith('http://127.0.0.1:8000/api/networks');
+                let element = container.getElementsByTagName("section")[1];
+                let nroRRSS = element.getElementsByTagName("i");
+                expect(nroRRSS.length).toBe(0);
+            })
         });
 
-        test('Carga de x', () => {
-            let fakeData = { facebook: '', x: "https://www.google.com/", tiktok: "", instagram: "" };
-            mock.onGet("/users").reply(function (config) {
-                return [200, fakeData,];
-            });
+        test('Carga de info contacto', async () => {
+            let fakeData = [
+                { id: 1, name: "Email", data: "correo@gmail.com" },
+                { id: 2, name: "Telefono", data: "12345678" },
+            ];
+            await act(() => Promise.resolve(
+                axios.get
+                    .mockResolvedValueOnce(
+                        { data: fakeData }
+                    )));
             const { container } = render(<Footer />);
-            let element = container.getElementsByTagName("section")[1];
-            let tag = element.getElementsByTagName("i")[0];
-            tag.getAttribute("href");
-            expect(element.getElementsByTagName("i").length === 1 && tag.getAttribute("href") === fakeData.x).toBeTruthy();
+            await waitFor(() => {
+                expect(axios.get).toHaveBeenCalledWith('http://127.0.0.1:8000/api/networks');
+                let element = container.getElementsByTagName("section")[0];
+                let nroRRSS = element.getElementsByTagName("i");
+                expect(nroRRSS.length).toBe(3);
+            })
         });
 
-        test('Carga de tiktok', () => {
-            let fakeData = { facebook: '', x: "", tiktok: "https://www.google.com/", instagram: "" };
-            mock.onGet("/users").reply(function (config) {
-                return [200, fakeData,];
-            });
+        test('Carga de ninguna RRSS', async () => {
+            let fakeData = [];
+            await act(() => Promise.resolve(
+                axios.get
+                    .mockResolvedValueOnce(
+                        { data: fakeData }
+                    )));
             const { container } = render(<Footer />);
-            let element = container.getElementsByTagName("section")[1];
-            let tag = element.getElementsByTagName("i")[0];
-            tag.getAttribute("href");
-            expect(element.getElementsByTagName("i").length === 1 && tag.getAttribute("href") === fakeData.tiktok).toBeTruthy();
-        });
-
-        test('Carga de instagram', () => {
-            let fakeData = { facebook: '', x: "", tiktok: "", instagram: "https://www.google.com/" };
-            mock.onGet("/users").reply(function (config) {
-                return [200, fakeData,];
-            });
-            const { container } = render(<Footer />);
-            let element = container.getElementsByTagName("section")[1];
-            let tag = element.getElementsByTagName("i")[0];
-            tag.getAttribute("href");
-            expect(element.getElementsByTagName("i").length === 1 && tag.getAttribute("href") === fakeData.instagram).toBeTruthy();
-        });
-
-        test('Carga de todas las RRSS', () => {
-            let fakeData = { facebook: 'https://www.google.com/', x: "https://www.google.com/", tiktok: "https://www.google.com/", instagram: "https://www.google.com/" };
-            mock.onGet("/users").reply(function (config) {
-                return [200, fakeData,];
-            });
-            const { container } = render(<Footer />);
-            let element = container.getElementsByTagName("section")[1];
-            let nroRRSS = element.getElementsByTagName("i");
-            expect(nroRRSS.length).toBe(4);
-        });
-
-        test('Carga de niguna', () => {
-            let fakeData = { facebook: "", x: "", tiktok: "", instagram: "" };
-            mock.onGet("/users").reply(function (config) {
-                return [200, fakeData,];
-            });
-            const { container } = render(<Footer />);
-            let element = container.getElementsByTagName("section")[1];
-            let nroRRSS = element.getElementsByTagName("i");
-            expect(nroRRSS.length).toBe(0);
+            await waitFor(() => {
+                expect(axios.get).toHaveBeenCalledWith('http://127.0.0.1:8000/api/networks');
+                let element = container.getElementsByTagName("section")[0];
+                let nroRRSS = element.getElementsByTagName("i");
+                expect(nroRRSS.length).toBe(1);
+            })
         });
 
     });
