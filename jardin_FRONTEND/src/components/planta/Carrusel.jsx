@@ -1,3 +1,4 @@
+import { offset } from '@popperjs/core';
 import './Carrusel.css';
 
 const Carrusel = ({ imagenes }) => {
@@ -24,19 +25,18 @@ const Carrusel = ({ imagenes }) => {
                         );
                     })}
                 </div>
-                <div className="carousel-inner" style={{ maxWidth: "350px" }}>
+                <div className="carousel-inner" style={{maxWidth: "600px"}}>
                     {imagenes.map(imagen => (
                         <div
                             className={"carousel-item " + (imagen.id === idPrimeraImagen ? "active" : "")}
                             key={imagen.id}
-                            style={{ height: "100%" }}
                         >
-                            <div className="d-flex align-items-center justify-content-center"
-                                style={{ height: "280px", width: "350px" }}>
+                            <div className="d-flex align-items-center justify-content-center" style={{ height: "450px", width: "600px"}}>
                                 <img
+                                    id='imagen'
                                     src={`http://127.0.0.1:8000/${imagen.image}`}
                                     className="d-block"
-                                    style={{ maxHeight: "240px", maxWidth: "350px" }}
+                                    style={{ maxHeight: "400px", maxWidth: "600px" }}
                                 />
                             </div>
                         </div>

@@ -1,0 +1,36 @@
+.carousel-control-next-icon,
+.carousel-control-prev-icon {
+  filter: invert(1);
+}
+
+.carousel .carousel-indicators button {
+  background-color: gray;
+  transform: TranslateY(+90%);
+}
+
+.carousel .carousel-indicators button.active {
+  background-color: black;
+  transform: TranslateY(+90%);
+}
+
+.carousel {
+  position: relative;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  position: absolute;
+  top: 50%;
+}
+
+.carousel-control-prev {    
+  right: auto;
+  left: 20px;
+  transform: translateY(-45%);
+}
+
+.carousel-control-next {
+  left: auto;
+  right: 20px;
+  transform: translateY(-45%);
+}

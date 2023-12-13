@@ -154,7 +154,7 @@ const Galeria = () => {
                             <a id="enlacePlanta" href={"/planta/" + planta.id} style={{ textDecoration: "none" }}>
                                 <img
                                     src={`http://127.0.0.1:8000/${planta.images[0].image}`}
-                                    className="p-2 card-img-top object-fit-scale rounded"
+                                    className="p-1 card-img-top object-fit-scale rounded"
                                     alt={planta.name} height={"250"} />
                                 <div className="card-body text-dark border-top" style={{whiteSpace: "pre"}}>
                                     <h5><b>Nombre:</b>  {planta.name}</h5>
