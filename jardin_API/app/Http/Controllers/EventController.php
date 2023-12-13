@@ -70,7 +70,7 @@ class EventController extends Controller
                 'time' => 'required',
                 'description' => 'required',
                 'images' => 'sometimes|array',
-                'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
+                'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg'
             ]);
         } catch (ValidationException $e) {
             return response()->json(['errors' => $e->errors()], 422);
