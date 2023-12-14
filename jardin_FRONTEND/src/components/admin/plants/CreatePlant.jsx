@@ -10,7 +10,7 @@ function CreatePlant({ onUpdate, plants }) {
     const [previewImages, setPreviewImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [medicinalProperties, setMedicinalProperties] = useState([]);
-    const patternBase = ")[a-zA-Z0-9\s]*";
+    const patternBase = ")[a-zA-Z0-9 ,\.:\-]+$";
     let patternExistentes = "^(";
 
     useEffect(() => {
@@ -25,18 +25,6 @@ function CreatePlant({ onUpdate, plants }) {
     }, []);
 
     useEffect(() => {
-        $('#createPlantModal').on('hidden.bs.modal', function () {
-            setName('');
-            setScientificName('');
-            setDescription('');
-            setCategory('');
-            setImages([]);
-            setPreviewImages([]);
-            setMedicinalProperties([]);
-        });
-    }, []);
-
-    useEffect(() => {
         setImageFeedback();
     }, [images]);
 
@@ -48,7 +36,6 @@ function CreatePlant({ onUpdate, plants }) {
                 URL.createObjectURL(file)
             ),
         ]);
-        setImageFeedback();
     };
 
     const removeImage = (index) => (event) => {
@@ -100,7 +87,7 @@ function CreatePlant({ onUpdate, plants }) {
                         },
                     }
                 );
-
+                resetModal();
                 $('#createPlantModal').modal('hide');
                 onUpdate();
             } catch (error) {
@@ -138,7 +125,6 @@ function CreatePlant({ onUpdate, plants }) {
                 patternExistentes = nuevoPattern;
                 nuevoPattern += patternBase;
                 document.getElementById("plantName").setAttribute("pattern", nuevoPattern);
-                feedback.innerText = "EL nombre de planta ingresado ya existe."
             }
             return planta.name.toLowerCase() === nombrePlanta.toLowerCase();
         });
@@ -149,6 +135,20 @@ function CreatePlant({ onUpdate, plants }) {
         } else {
             feedback.innerText = "El nombre no puede estar vacio.";
         }
+    };
+
+    const resetModal = () => {
+        document.getElementById("formCrearPlanta").classList.remove("was-validated");
+        let imgFeedback = document.getElementById("addImageFeedback");
+        imgFeedback.classList.remove("border-danger");
+        imgFeedback.classList.remove("border-success");
+        setName('');
+        setScientificName('');
+        setDescription('');
+        setCategory('');
+        setImages([]);
+        setPreviewImages([]);
+        setMedicinalProperties([]);
     };
 
     return (
@@ -182,6 +182,7 @@ function CreatePlant({ onUpdate, plants }) {
                                 type="button"
                                 data-bs-dismiss="modal"
                                 aria-label="Close"
+                                onClick={resetModal}
                             ></button>
                         </div>
                         <form onSubmit={handleSubmit} noValidate className='needs-validation' id='formCrearPlanta'>
@@ -203,7 +204,7 @@ function CreatePlant({ onUpdate, plants }) {
                                                 setName(e.target.value)
                                             }
                                             onKeyUp={e => setNombreFeedback(e.target.value)}
-                                            pattern='[a-zA-Z0-9\s]*'
+                                            pattern='[a-zA-Z0-9 ,\.:\-]+$'
                                             required
                                         />
                                         <div className="invalid-feedback" id='nombrePlantaFeedback'>
@@ -227,6 +228,7 @@ function CreatePlant({ onUpdate, plants }) {
                                                     e.target.value
                                                 )
                                             }
+                                            pattern='[a-zA-Z0-9 ,\.:\-]+$'
                                             required
                                         />
                                         <div className="invalid-feedback">
@@ -402,6 +404,7 @@ function CreatePlant({ onUpdate, plants }) {
                                     type="button"
                                     className="btn btn-secondary"
                                     data-bs-dismiss="modal"
+                                    onClick={resetModal}
                                 >
                                     Cerrar
                                 </button>

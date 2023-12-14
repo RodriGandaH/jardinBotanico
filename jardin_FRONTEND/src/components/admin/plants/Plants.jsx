@@ -3,6 +3,7 @@ import axios from 'axios';
 import CreatePlant from './CreatePlant';
 import EditPlant from './EditPlant';
 import DeletePlant from './DeletePlant';
+
 let plantsCopy;
 function Plants() {
     const [plants, setPlants] = useState([]);
@@ -69,20 +70,25 @@ function Plants() {
                                 <strong>Descripción:</strong>{' '}
                                 {plant.description}
                             </p>
-                            <p className="mb-0">
+
+                        </div>
+                        <div className="ms-3 me-2 d-flex justify-content-between">
+                            <div className="mb-0">
                                 <strong>Categoría:</strong>{' '}
                                 {plant.category
                                     ? plant.category.name
                                     : 'Sin categoría'}
-                            </p>
-                        </div>
-                        <div className="m-2 d-flex justify-content-end">
-                            <EditPlant
-                                plant={plant}
-                                onUpdate={fetchPlants}
-                                id={plant.id}
-                            />
-                            <DeletePlant plant={plant} onUpdate={fetchPlants} />
+                            </div>
+                            <div className='d-flex'>
+                                <EditPlant
+                                    plant={plant}
+                                    onUpdate={fetchPlants}
+                                    id={plant.id}
+                                    plants={plants}
+                                />
+                                <DeletePlant plant={plant} onUpdate={fetchPlants} />
+                            </div>
+
                         </div>
                     </div>
                 ))
