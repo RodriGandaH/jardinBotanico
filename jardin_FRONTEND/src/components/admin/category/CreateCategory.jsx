@@ -11,6 +11,7 @@ function CreateCategory({ onUpdate, categories }) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         let form = document.getElementById("formCrearCategoria");
+        nameChange(name);
         if (form.checkValidity()) {
             const token = localStorage.getItem('token');
             try {
@@ -23,7 +24,6 @@ function CreateCategory({ onUpdate, categories }) {
                         },
                     }
                 );
-                setName('');
                 $('#modalCrearCategoria').modal('hide');
                 onUpdate();
                 resetModalData();
