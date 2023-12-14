@@ -10,7 +10,7 @@ function CreatePlant({ onUpdate, plants }) {
     const [previewImages, setPreviewImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [medicinalProperties, setMedicinalProperties] = useState([]);
-    const patternBase = ")[a-zA-Z0-9]*";
+    const patternBase = ")[a-zA-Z0-9\s]*";
     let patternExistentes = "^(";
 
     useEffect(() => {
@@ -203,7 +203,7 @@ function CreatePlant({ onUpdate, plants }) {
                                                 setName(e.target.value)
                                             }
                                             onKeyUp={e => setNombreFeedback(e.target.value)}
-                                            pattern='[a-zA-Z0-9]*'
+                                            pattern='[a-zA-Z0-9\s]*'
                                             required
                                         />
                                         <div className="invalid-feedback" id='nombrePlantaFeedback'>
@@ -340,7 +340,7 @@ function CreatePlant({ onUpdate, plants }) {
                                     </div>
                                     <div className="col-md-6 mb-2">
                                         <div className="border rounded"
-                                            style={{ height: "367px", overflowY: "auto", overflowX: 'hidden' }}>
+                                            style={{ minHeight: "318px", maxHeight: "457px", overflowY: "auto", overflowX: 'hidden' }}>
                                             <label
                                                 htmlFor="plantImages"
                                                 className="form-label p-2"
