@@ -54,8 +54,8 @@ function DeletePlant({ plant, onUpdate }) {
                         </div>
                         <div className="modal-body">
                             <p>
-                                ¿Estás seguro de que quieres eliminar esta
-                                planta?
+                                ¿Estás seguro de que quieres eliminar la planta
+                                "{plant.name}" ?
                             </p>
                         </div>
                         <div className="modal-footer">

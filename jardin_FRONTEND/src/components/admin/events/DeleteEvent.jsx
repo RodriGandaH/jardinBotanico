@@ -56,8 +56,8 @@ function DeleteEvent({ event: evento, onUpdate }) {
                         </div>
                         <div className="modal-body">
                             <p>
-                                ¿Estás seguro de que quieres eliminar este
-                                evento?
+                                ¿Estás seguro de que quieres eliminar el evento
+                                "{evento.name}" ?
                             </p>
                         </div>
                         <div className="modal-footer">
