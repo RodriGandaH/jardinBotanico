@@ -5,12 +5,13 @@ function CreateCategory({ onUpdate, categories }) {
 
     const [name, setName] = useState('');
     const [feedback, setFeedBack] = useState("El nombre no puede estar vacio.");
-    const [validando, setValidando] = useState(false);
-    const [datosValidos, setDatosValidos] = useState(false);
+    const patternBase = ")[a-zA-Z0-9]*";
+    let patternExistentes = "^(";
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (primeraValidacion() || datosValidos) {
+        let form = document.getElementById("formCrearCategoria");
+        if (form.checkValidity()) {
             const token = localStorage.getItem('token');
             try {
                 const response = await axios.post(
@@ -29,53 +30,36 @@ function CreateCategory({ onUpdate, categories }) {
             } catch (error) {
                 console.log('Error al crear la categoría:', error);
             }
+        } else {
+            form.classList.add('was-validated');
         }
     };
 
     const nameChange = (nombreCategoria) => {
-        if (validando) {
-            setDatosValidos(nombreCategoriaValido(nombreCategoria));
-        }
-    };
-
-    const primeraValidacion = () => {
-        if (!validando) {
-            setValidando(true);
-            let nombreCategoria = document.getElementById("nombreCategoria").value;
-            return nombreCategoriaValido(nombreCategoria);
-        } else {
-            return false;
-        }
-    }
-
-    const nombreCategoriaValido = (nombreCategoria) => {
-        nombreCategoria = nombreCategoria.trim();
-        let valido = nombreCategoria != "";
-        if (valido) {
-            categories.map(category => {
-                if (category.name === nombreCategoria) {
-                    valido = false;
-                    setFeedBack("EL nombre de categoría ingresado ya existe.");
-                }
-            });
+        let existe = categories.find(category => {
+            if (category.name === nombreCategoria) {
+                let nuevoPattern = patternExistentes + "(?!" + nombreCategoria + "$)";
+                patternExistentes = nuevoPattern;
+                nuevoPattern += patternBase;
+                document.getElementById("nombreCategoria").setAttribute("pattern", nuevoPattern);
+                setFeedBack("EL nombre de categoría ingresado ya existe.");
+            }
+            return category.name === nombreCategoria;
+        });
+        if (existe) {
+            setFeedBack("Ya existe una categoría con este nombre.");
+        } else if (nombreCategoria != "") {
+            setFeedBack("No se admiten caracteres especiales.");
         } else {
             setFeedBack("El nombre no puede estar vacio.");
         }
-        if (valido) {
-            document.getElementById("nombreCategoria").classList.remove("is-invalid");
-            document.getElementById("nombreCategoria").classList.add("is-valid");
-        } else {
-            document.getElementById("nombreCategoria").classList.remove("is-valid");
-            document.getElementById("nombreCategoria").classList.add("is-invalid");
-        }
-        return valido;
-    }
+    };
 
     const resetModalData = () => {
-        document.getElementById('nombreCategoria').value = '';
-        document.getElementById("nombreCategoria").classList.remove("is-valid");
-        document.getElementById("nombreCategoria").classList.remove("is-invalid");
-        setValidando(false);
+        let form = document.getElementById("formCrearCategoria");
+        form.classList.remove("was-validated");
+        setName("");
+        document.getElementById("nombreCategoria").value = "";
     };
 
     return (
@@ -114,7 +98,7 @@ function CreateCategory({ onUpdate, categories }) {
                                 aria-label="Close"
                             ></button>
                         </div>
-                        <form noValidate onSubmit={handleSubmit} id="formCrearCategoria">
+                        <form noValidate onSubmit={handleSubmit} id="formCrearCategoria" className='needs-validation'>
                             <div className="modal-body">
                                 <label
                                     htmlFor="nombreCategoria"
@@ -129,6 +113,7 @@ function CreateCategory({ onUpdate, categories }) {
                                     placeholder="Ingrese un nombre..."
                                     onChange={(e) => setName(e.target.value)}
                                     onKeyUp={e => nameChange(e.target.value)}
+                                    pattern='[a-zA-Z0-9]*'
                                     required
                                 />
                                 <div className="invalid-feedback">

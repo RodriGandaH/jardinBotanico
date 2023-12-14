@@ -5,11 +5,12 @@ function EditCategory({ category, onUpdate, categories }) {
 
     const [name, setName] = useState(category.name);
     const [feedback, setFeedBack] = useState("El nombre no puede estar vacio.");
-    const [validando, setValidando] = useState(false);
-    const [datosValidos, setDatosValidos] = useState(false);
     const idModal = "modalEditarCategoria" + category.id;
     const idLabel = "modalEditarCategoriaLabel" + category.id;
     const idInput = "nombreCategoria" + category.id;
+    const idForm = "formCategoria" + category.id;
+    const patternBase = ")[a-zA-Z0-9]*";
+    let patternExistentes = "^(";
 
 
     useEffect(() => {
@@ -18,7 +19,8 @@ function EditCategory({ category, onUpdate, categories }) {
 
     const handleEdit = async (event) => {
         event.preventDefault();
-        if (primeraValidacion() || datosValidos) {
+        let form = document.getElementById(idForm);
+        if (form.checkValidity()) {
             const token = localStorage.getItem('token');
             try {
                 const response = await axios.put(
@@ -37,53 +39,36 @@ function EditCategory({ category, onUpdate, categories }) {
             } catch (error) {
                 console.log('Error al editar la categoría:', error);
             }
+        } else {
+            form.classList.add('was-validated');
         }
     };
 
     const nameChange = (nombreCategoria) => {
-        if (validando) {
-            setDatosValidos(nombreCategoriaValido(nombreCategoria));
-        }
-    };
-
-    const primeraValidacion = () => {
-        if (!validando) {
-            setValidando(true);
-            let nombreCategoria = document.getElementById("nombreCategoria").value;
-            return nombreCategoriaValido(nombreCategoria);
-        } else {
-            return false;
-        }
-    }
-
-    const nombreCategoriaValido = (nombreCategoria) => {
-        nombreCategoria = nombreCategoria.trim();
-        nombreCategoria = nombreCategoria === "" ? name : nombreCategoria;
-        let valido = nombreCategoria != "";
-        if (valido) {
-            categories.map(category => {
-                if (category.name === nombreCategoria) {
-                    valido = false;
-                    setFeedBack("EL nombre de categoría ingresado ya existe.");
-                }
-            });
+        let existe = categories.find(category => {
+            if (category.name === nombreCategoria) {
+                let nuevoPattern = patternExistentes + "(?!" + nombreCategoria + "$)";
+                patternExistentes = nuevoPattern;
+                nuevoPattern += patternBase;
+                document.getElementById("nombreCategoria").setAttribute("pattern", nuevoPattern);
+                setFeedBack("EL nombre de categoría ingresado ya existe.");
+            }
+            return category.name === nombreCategoria;
+        });
+        if (existe) {
+            setFeedBack("Ya existe una categoría con este nombre.");
+        } else if (nombreCategoria != "") {
+            setFeedBack("No se admiten caracteres especiales.");
         } else {
             setFeedBack("El nombre no puede estar vacio.");
         }
-        if (valido) {
-            document.getElementById(idInput).classList.remove("is-invalid");
-            document.getElementById(idInput).classList.add("is-valid");
-        } else {
-            document.getElementById(idInput).classList.remove("is-valid");
-            document.getElementById(idInput).classList.add("is-invalid");
-        }
-        return valido;
-    }
+    };
 
     const resetModalData = () => {
-        document.getElementById(idInput).classList.remove("is-valid");
-        document.getElementById(idInput).classList.remove("is-invalid");
-        setValidando(false);
+        let form = document.getElementById(idForm);
+        form.classList.remove("was-validated");
+        setName(category.name);
+        document.getElementById(idInput).value = "";
     };
 
     return (
@@ -99,7 +84,7 @@ function EditCategory({ category, onUpdate, categories }) {
                             <h1 className="modal-title fs-5" id={idLabel}>Editar categoría</h1>
                             <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={resetModalData}></button>
                         </div>
-                        <form onSubmit={handleEdit}>
+                        <form onSubmit={handleEdit} id={idForm} noValidate className='needs-validation'>
                             <div className="modal-body">
                                 <label htmlFor={idInput} className="form-label">Nombre:</label>
                                 <input
@@ -110,6 +95,7 @@ function EditCategory({ category, onUpdate, categories }) {
                                     placeholder="Ingrese un nombre..."
                                     onChange={(e) => setName(e.target.value)}
                                     onKeyUp={e => nameChange(e.target.value)}
+                                    pattern='[a-zA-Z0-9]*'
                                     required
                                 />
                                 <div className="invalid-feedback">
