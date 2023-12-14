@@ -133,7 +133,7 @@ function EditEvent({ event: evento, onUpdate }) {
     return (
         <div>
             <button
-                className="btn btn-primary"
+                className="btn btn-primary me-2"
                 data-bs-toggle="modal"
                 data-bs-target={`#editEventModal-${evento.id}`}
                 onClick={() => {

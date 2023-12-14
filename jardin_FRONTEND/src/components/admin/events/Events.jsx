@@ -33,7 +33,7 @@ function Events() {
             <h1 className="mb-4">Eventos</h1>
             <div className="row mt-4">
                 <div className="col-md-6">
-                    <CreateEvent onUpdate={fetchEvents} />
+                    <CreateEvent onUpdate={fetchEvents} events={events} />
                 </div>
                 <div className="col-md-6">
                     <div className="input-group mb-3">
@@ -56,7 +56,7 @@ function Events() {
             {events.length > 0 ? (
                 events.map((event) => (
                     <div key={event.id} className="card mb-3">
-                        <div className="card-body">
+                        <div className="card-body pb-0">
                             <p>
                                 <strong>Nombre:</strong> {event.name}
                             </p>
@@ -64,16 +64,20 @@ function Events() {
                                 <strong>Descripción:</strong>{' '}
                                 {event.description}
                             </p>
-                            <p>
-                                <strong>Fecha:</strong> {event.date}
-                            </p>
-                            <p className="mb-0">
-                                <strong>Hora:</strong> {event.time}
-                            </p>
                         </div>
-                        <div className="m-2 d-flex justify-content-end">
-                            <EditEvent event={event} onUpdate={fetchEvents} />
-                            <DeleteEvent event={event} onUpdate={fetchEvents} />
+                        <div className="mx-2 mb-3 d-flex justify-content-between">
+                            <div className='ms-2'>
+                                <p>
+                                    <strong>Fecha:</strong> {event.date}
+                                </p>
+                                <p className="mb-0">
+                                    <strong>Hora:</strong> {event.time}
+                                </p>
+                            </div>
+                            <div className='d-flex align-items-end'>
+                                <EditEvent event={event} onUpdate={fetchEvents} />
+                                <DeleteEvent event={event} onUpdate={fetchEvents} />
+                            </div>
                         </div>
                     </div>
                 ))

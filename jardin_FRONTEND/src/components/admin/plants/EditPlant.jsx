@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Plants.css'
 
 function EditPlant({ plant, onUpdate, plants }) {
     const [name, setName] = useState(plant.name);
@@ -31,7 +32,7 @@ function EditPlant({ plant, onUpdate, plants }) {
     const idImgFeedback = "editImgFeedback" + plant.id;
     const idNombrePlanta = "editNombrePlanta" + plant.id;
     const idNombrePlantaFeedback = "editNombreFeedback" + plant.id;
-    const patternBase = ")[a-zA-Z0-9 ,\.:\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
     let patternExistentes = "^(";
 
     const fetchCategories = async () => {
@@ -272,7 +273,7 @@ function EditPlant({ plant, onUpdate, plants }) {
     return (
         <div>
             <button
-                className="btn btn-primary mb-3"
+                className="btn btn-primary me-2"
                 data-bs-toggle="modal"
                 data-bs-target={`#editPlantModal-${plant.id}`}
                 onClick={fetchCategories}
@@ -473,7 +474,7 @@ function EditPlant({ plant, onUpdate, plants }) {
                                             </label>
                                             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 px-3 mb-3">
                                                 <div className='col' key="addImage">
-                                                    <div className='d-flex justify-content-center align-items-center border rounded'
+                                                    <div className='d-flex justify-content-center align-items-center border rounded boton-add-img'
                                                         style={{ width: "140px", height: "140px", backgroundColor: "#e1e7ee", cursor: "pointer" }}
                                                         onClick={() => document.getElementById('plantImages').click()}
                                                         id={idImgFeedback}

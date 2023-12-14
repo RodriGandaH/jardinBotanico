@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import './Plants.css'
 
 function CreatePlant({ onUpdate, plants }) {
     const [name, setName] = useState('');
@@ -10,7 +11,7 @@ function CreatePlant({ onUpdate, plants }) {
     const [previewImages, setPreviewImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [medicinalProperties, setMedicinalProperties] = useState([]);
-    const patternBase = ")[a-zA-Z0-9 ,\.:\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
     let patternExistentes = "^(";
 
     useEffect(() => {
@@ -351,7 +352,7 @@ function CreatePlant({ onUpdate, plants }) {
                                             </label>
                                             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 px-3 mb-3">
                                                 <div className='col' key="addImage">
-                                                    <div className='d-flex justify-content-center align-items-center border rounded'
+                                                    <div className='d-flex justify-content-center align-items-center border rounded boton-add-img'
                                                         style={{ width: "140px", height: "140px", backgroundColor: "#e1e7ee", cursor: "pointer" }}
                                                         onClick={() => document.getElementById('plantImages').click()}
                                                         id='addImageFeedback'

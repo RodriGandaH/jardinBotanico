@@ -58,7 +58,7 @@ function Plants() {
             {plants.length > 0 ? (
                 plants.map((plant) => (
                     <div key={plant.id} className="card mb-3">
-                        <div className="card-body">
+                        <div className="card-body pb-0">
                             <p>
                                 <strong>Nombre:</strong> {plant.name}
                             </p>
@@ -73,13 +73,13 @@ function Plants() {
 
                         </div>
                         <div className="ms-3 me-2 d-flex justify-content-between">
-                            <div className="mb-0">
+                            <div className="mb-2">
                                 <strong>Categoría:</strong>{' '}
                                 {plant.category
                                     ? plant.category.name
                                     : 'Sin categoría'}
                             </div>
-                            <div className='d-flex'>
+                            <div className='d-flex mb-2'>
                                 <EditPlant
                                     plant={plant}
                                     onUpdate={fetchPlants}
