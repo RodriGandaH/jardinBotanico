@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import dayjs from 'dayjs';
 
 function CreateEvent({ onUpdate, events }) {
     const [name, setName] = useState('');
@@ -200,6 +201,7 @@ function CreateEvent({ onUpdate, events }) {
                                             type="date"
                                             className="form-control"
                                             id="eventDate"
+                                            min={dayjs().format("YYYY-MM-DD")}
                                             value={date}
                                             onChange={(e) =>
                                                 setDate(e.target.value)

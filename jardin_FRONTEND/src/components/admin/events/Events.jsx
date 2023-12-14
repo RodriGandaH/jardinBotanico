@@ -75,7 +75,7 @@ function Events() {
                                 </p>
                             </div>
                             <div className='d-flex align-items-end'>
-                                <EditEvent event={event} onUpdate={fetchEvents} />
+                                <EditEvent event={event} onUpdate={fetchEvents} events={events} />
                                 <DeleteEvent event={event} onUpdate={fetchEvents} />
                             </div>
                         </div>
