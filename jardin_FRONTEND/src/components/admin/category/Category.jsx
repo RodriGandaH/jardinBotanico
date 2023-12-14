@@ -56,7 +56,7 @@ function Category() {
             </div>
             {categories.length > 0 ? (
                 categories.map((category) => (
-                    <div className="row border mb-3" key={category.id}>
+                    <div className="row border rounded mb-3" key={category.id}>
                         <div className="d-flex justify-content-between align-items-center my-2">
                             <p><b>Nombre:</b> {category.name}</p>
                             <div className='d-flex col-md-6 justify-content-end'>

@@ -11,7 +11,6 @@ function Plants() {
         const response = await axios.get('http://127.0.0.1:8000/api/plants');
         plantsCopy = [...response.data];
         setPlants(response.data);
-        console.log(response.data);
     };
 
     useEffect(() => {
@@ -35,7 +34,7 @@ function Plants() {
             <h1 className="mb-4">Plantas</h1>
             <div className="row mt-4">
                 <div className="col-md-6">
-                    <CreatePlant onUpdate={fetchPlants} />
+                    <CreatePlant onUpdate={fetchPlants} plants={plants} />
                 </div>
                 <div className="col-md-6">
                     <div className="input-group mb-3">

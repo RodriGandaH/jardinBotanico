@@ -37,14 +37,14 @@ function CreateCategory({ onUpdate, categories }) {
 
     const nameChange = (nombreCategoria) => {
         let existe = categories.find(category => {
-            if (category.name === nombreCategoria) {
+            if (category.name.toLowerCase() === nombreCategoria.toLowerCase()) {
                 let nuevoPattern = patternExistentes + "(?!" + nombreCategoria + "$)";
                 patternExistentes = nuevoPattern;
                 nuevoPattern += patternBase;
                 document.getElementById("nombreCategoria").setAttribute("pattern", nuevoPattern);
                 setFeedBack("EL nombre de categoría ingresado ya existe.");
             }
-            return category.name === nombreCategoria;
+            return category.name.toLowerCase() === nombreCategoria.toLowerCase();
         });
         if (existe) {
             setFeedBack("Ya existe una categoría con este nombre.");
