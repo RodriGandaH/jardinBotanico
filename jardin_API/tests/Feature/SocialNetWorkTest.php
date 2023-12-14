@@ -12,7 +12,7 @@ use Tests\TestCase;
 
 class SocialNetWorkTest extends TestCase
 {
-
+    use RefreshDatabase;
     public function testIndex()
     {
         $socialNetworks = SocialNetwork::factory()->count(5)->create();

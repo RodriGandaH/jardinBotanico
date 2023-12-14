@@ -15,7 +15,7 @@ class EventController extends Controller
 
     public function index()
     {
-        $events = Event::with('images')->get();
+        $events = Event::with('images')->orderBy('name')->get();
         return response()->json($events);
     }
 
