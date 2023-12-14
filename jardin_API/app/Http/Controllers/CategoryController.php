@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::with('plants.images')->get();
+        $categories = Category::with('plants.images')->orderBy('name')->get();
 
         return response()->json($categories, 200);
     }
@@ -21,7 +21,7 @@ class CategoryController extends Controller
 
     public function getCategories()
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('name')->get();
         return response()->json($categories, 200);
     }
 

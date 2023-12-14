@@ -16,10 +16,13 @@ class PlantController extends Controller
 {
     public function index()
     {
-        $plants = Plant::with('category', 'images', 'medicinalProperties')->get();
+        $plants = Plant::with('category', 'images', 'medicinalProperties')
+            ->orderBy('name')
+            ->get();
 
         return response()->json($plants, 200);
     }
+
 
 
     public function store(StorePlantRequest $request)
