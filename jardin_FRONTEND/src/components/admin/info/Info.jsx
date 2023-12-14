@@ -10,14 +10,16 @@ function Info() {
     const fetchInfo = async () => {
         const response = await axios.get('http://127.0.0.1:8000/api/networks');
         setInfo(response.data);
-        console.log(response.data);
     };
+
     useEffect(() => {
         fetchInfo();
     }, []);
+
     const handleUpdate = () => {
         fetchInfo();
     };
+
     return (
         <>
             <h1 className="mb-4">Informacion</h1>
@@ -25,16 +27,17 @@ function Info() {
             <CreateInfo onUpdate={handleUpdate} />
             {info.length > 0 ? (
                 info.map((inf) => (
-                    <div className="card mb-3" key={inf.id}>
-                        <div className="card-body">
-                            <p>
-                                <strong>{inf.name}:</strong> {inf.data}{' '}
-                            </p>
-                        </div>
-                        <div className="m-2 d-flex justify-content-end">
-                            <EditInfo inf={inf} onUpdate={handleUpdate} />
+                    <div className="d-flex justify-content-between mb-3 border rounded" key={inf.id}>
+                        <p className='mt-2 ms-2'>
+                            <strong>{inf.name}:</strong> {inf.data}{' '}
+                        </p>
+                        <div className="me-2 mt-2 d-flex justify-content-end">
+                            <div className='me-2'>
+                                <EditInfo inf={inf} onUpdate={handleUpdate} />
+                            </div>
                             <DeleteInfo inf={inf} onUpdate={handleUpdate} />
                         </div>
+
                     </div>
                 ))
             ) : (

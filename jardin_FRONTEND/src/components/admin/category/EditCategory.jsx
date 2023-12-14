@@ -4,12 +4,13 @@ import axios from 'axios';
 function EditCategory({ category, onUpdate, categories }) {
 
     const [name, setName] = useState(category.name);
+    const originalName = category.name;
     const [feedback, setFeedBack] = useState("El nombre no puede estar vacio.");
     const idModal = "modalEditarCategoria" + category.id;
     const idLabel = "modalEditarCategoriaLabel" + category.id;
     const idInput = "nombreCategoria" + category.id;
     const idForm = "formCategoria" + category.id;
-    const patternBase = ")[a-zA-Z0-9]*";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
     let patternExistentes = "^(";
 
 
@@ -20,6 +21,7 @@ function EditCategory({ category, onUpdate, categories }) {
     const handleEdit = async (event) => {
         event.preventDefault();
         let form = document.getElementById(idForm);
+        nameChange(name);
         if (form.checkValidity()) {
             const token = localStorage.getItem('token');
             try {
@@ -32,7 +34,6 @@ function EditCategory({ category, onUpdate, categories }) {
                         },
                     }
                 );
-                setName('');
                 $('#' + idModal).modal('hide');
                 onUpdate();
                 resetModalData();
@@ -45,16 +46,18 @@ function EditCategory({ category, onUpdate, categories }) {
     };
 
     const nameChange = (nombreCategoria) => {
-        let existe = categories.find(category => {
-            if (category.name === nombreCategoria) {
-                let nuevoPattern = patternExistentes + "(?!" + nombreCategoria + "$)";
-                patternExistentes = nuevoPattern;
-                nuevoPattern += patternBase;
-                document.getElementById("nombreCategoria").setAttribute("pattern", nuevoPattern);
-                setFeedBack("EL nombre de categoría ingresado ya existe.");
-            }
-            return category.name === nombreCategoria;
-        });
+        let existe = null;
+        if (originalName.toLowerCase() != nombreCategoria.toLowerCase()) {
+            existe = categories.find(category => {
+                if (category.name.toLowerCase() === nombreCategoria.toLowerCase()) {
+                    let nuevoPattern = patternExistentes + "(?!" + nombreCategoria + "$)";
+                    patternExistentes = nuevoPattern;
+                    nuevoPattern += patternBase;
+                    document.getElementById(idInput).setAttribute("pattern", nuevoPattern);
+                }
+                return category.name.toLowerCase() === nombreCategoria.toLowerCase();
+            });
+        }
         if (existe) {
             setFeedBack("Ya existe una categoría con este nombre.");
         } else if (nombreCategoria != "") {
@@ -95,7 +98,7 @@ function EditCategory({ category, onUpdate, categories }) {
                                     placeholder="Ingrese un nombre..."
                                     onChange={(e) => setName(e.target.value)}
                                     onKeyUp={e => nameChange(e.target.value)}
-                                    pattern='[a-zA-Z0-9]*'
+                                    pattern='[a-zA-Z0-9 ,\.:\-]+$'
                                     required
                                 />
                                 <div className="invalid-feedback">

@@ -7,53 +7,80 @@ function CreateInfo({ onUpdate, info }) {
     const [label, setLabel] = useState('Dato');
 
     useEffect(() => {
-        $('#createInfoModal').on('hidden.bs.modal', function () {
-            setName('');
-            setData('');
-            setLabel('Dato');
-        });
-    }, []);
-
-    useEffect(() => {
+        let input = document.getElementById("dato");
+        let dataFeedback = document.getElementById("infoDataFeedback");
         switch (name) {
             case 'Email':
+                input.setAttribute("type", "email")
+                input.setAttribute("pattern", ".+@.+\\..{2,4}$");
+                dataFeedback.innerText = "Correo electrónico no válido";
                 setLabel('Correo');
                 break;
             case 'Telefono':
+                input.setAttribute("type", "tel")
+                input.setAttribute("pattern", "[0-9]{7,9}");
+                dataFeedback.innerText = "Número telefónico no válido";
                 setLabel('Número');
                 break;
             case 'Facebook':
+                input.setAttribute("type", "url")
+                input.setAttribute("pattern", "https://www.facebook.com/.+");
+                dataFeedback.innerText = "Enlace a Facebook no válido.";
+                setLabel('URL');
+                break;
             case 'Instagram':
+                input.setAttribute("type", "url")
+                input.setAttribute("pattern", "https://www.instagram.com/.+");
+                dataFeedback.innerText = "Enlace a Instagram no válido.";
+                setLabel('URL');
+                break;
             case 'Twitter':
+                input.setAttribute("type", "url")
+                input.setAttribute("pattern", "https://twitter.com/.+");
+                dataFeedback.innerText = "Enlace a Twitter no válido.";
                 setLabel('URL');
                 break;
             default:
+                input.setAttribute("type", "text")
+                input.setAttribute("pattern", "");
+                dataFeedback.innerText = "";
                 setLabel('Dato');
         }
     }, [name]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-
-        const token = localStorage.getItem('token');
-        try {
-            const response = await axios.post(
-                'http://127.0.0.1:8000/api/networks',
-                { name, data },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            console.log('Información enviada:', { name, data });
-
-            $('#createInfoModal').modal('hide');
-            onUpdate();
-        } catch (error) {
-            console.log('Error al crear la informacion:', error);
+        let form = document.getElementById("formCrearInfo");
+        if (form.checkValidity()) {
+            const token = localStorage.getItem('token');
+            try {
+                const response = await axios.post(
+                    'http://127.0.0.1:8000/api/networks',
+                    { name, data },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    }
+                );
+                resetModal();
+                $('#createInfoModal').modal('hide');
+                onUpdate();
+            } catch (error) {
+                console.log('Error al crear la informacion:', error);
+            }
+        } else {
+            form.classList.add("was-validated");
         }
+    };
+
+    const resetModal = () => {
+        document.getElementById("formCrearInfo").classList.remove("was-validated");
+        document.getElementById("dato").setAttribute("type", "text");
+        document.getElementById("infoDataFeedback").setAttribute("pattern", "");
+        setName('');
+        setData('');
+        setLabel('Dato');
     };
 
     return (
@@ -87,12 +114,13 @@ function CreateInfo({ onUpdate, info }) {
                                 className="btn-close"
                                 data-bs-dismiss="modal"
                                 aria-label="close"
+                                onClick={resetModal}
                             ></button>
                         </div>
-                        <form onSubmit={handleSubmit}>
+                        <form onSubmit={handleSubmit} className='needs-validation' noValidate id='formCrearInfo'>
                             <div className="modal-body">
                                 <label htmlFor="name" className="form-label">
-                                    Informacion:
+                                    Información:
                                 </label>
                                 <select
                                     name="info"
@@ -100,6 +128,7 @@ function CreateInfo({ onUpdate, info }) {
                                     className="form-select mb-3"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
+                                    required
                                 >
                                     <option value="">
                                         Seleccione una opción
@@ -110,21 +139,30 @@ function CreateInfo({ onUpdate, info }) {
                                     <option value="Telefono">Telefono</option>
                                     <option value="Twitter">Twitter</option>
                                 </select>
-                                <label htmlFor="url" className="form-label">
+                                <div className="invalid-feedback">
+                                    Debe seleccionar una opción valida.
+                                </div>
+                                <label htmlFor="dato" className="form-label">
                                     {label}:
                                 </label>
                                 <input
+                                    id='dato'
                                     type="text"
                                     className="form-control"
                                     value={data}
                                     onChange={(e) => setData(e.target.value)}
+                                    required
                                 />
+                                <div className="invalid-feedback" id='infoDataFeedback'>
+
+                                </div>
                             </div>
                             <div className="modal-footer">
                                 <button
                                     type="button"
                                     className="btn btn-secondary"
                                     data-bs-dismiss="modal"
+                                    onClick={resetModal}
                                 >
                                     Cerrar
                                 </button>
