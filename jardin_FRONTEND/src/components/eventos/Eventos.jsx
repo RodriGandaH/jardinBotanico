@@ -48,7 +48,7 @@ const Eventos = () => {
         <>
             <div className="row">
                 <div className="col-md-6">
-                    <h2 style={{color: "#091f14"}}>Eventos</h2>
+                    <h2 style={{ color: "#091f14" }}>Eventos</h2>
                 </div>
                 <div className="col-md-6">
                     <div className="input-group mb-3">
@@ -64,22 +64,26 @@ const Eventos = () => {
                     </div>
                 </div>
             </div>
-            {eventos.map(evento => (
-                <div className="col-md-12 border rounded mb-4" key={evento.id}>
-                    <div className={"d-flex my-3 " + getFlexDirection()}>
-                        <div className="d-flex col-md-4 col-sm-12 justify-content-center align-items-center">
-                            <Carrusel imagenes={evento.images} />
-                        </div>
-                        <div className={"col-md-8 col-sm-12 " + getBorder()}>
-                            <div className={"mt-2 mx-3"}>
-                                <h4>{evento.name}</h4>
-                                <h5>Se llevara a cabo el {dayjs(evento.date).format("DD-MM-YYYY")} a horas {evento.time.substring(0, 5)} </h5>
-                                <div style={{ whiteSpace: "pre-wrap" }}>{evento.description}</div>
+            {eventos.length == 0 ? (
+                <h5 className="text-center"><i>No se encontró ningún evento.</i></h5>
+            ) : (
+                eventos.map(evento => (
+                    <div className="col-md-12 border rounded mb-4" key={evento.id}>
+                        <div className={"d-flex my-3 " + getFlexDirection()}>
+                            <div className="d-flex col-md-4 col-sm-12 justify-content-center align-items-center">
+                                <Carrusel imagenes={evento.images} />
+                            </div>
+                            <div className={"col-md-8 col-sm-12 " + getBorder()}>
+                                <div className={"mt-2 mx-3"}>
+                                    <h4>{evento.name}</h4>
+                                    <h5>Se llevara a cabo el {dayjs(evento.date).format("DD-MM-YYYY")} a horas {evento.time.substring(0, 5)} </h5>
+                                    <div style={{ whiteSpace: "pre-wrap" }}>{evento.description}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            ))}
+                ))
+            )}
         </>
     );
 

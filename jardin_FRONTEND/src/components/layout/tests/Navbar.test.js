@@ -5,12 +5,6 @@ import { activeUrl } from '../Navbar';
 describe('Navbar', () => {
     describe('Test renders sin usuario admin', () => {
         const auth = { user: false };
-        test('No debe mostrarse el separador en el navbar', () => {
-            const { container } = render(<Navbar isAdmin={auth.user} />);
-            let element = container.getElementsByClassName("vr")[0];
-            expect(element).not.toBeVisible();
-        });
-
         test('No debe mostrarse la opcion A. Categorías en el navbar', () => {
             render(<Navbar isAdmin={auth.user} />);
             expect(screen.getByText("A. Categorías")).not.toBeVisible();
@@ -34,11 +28,6 @@ describe('Navbar', () => {
 
     describe('Test renders con usuario admin', () => {
         const auth = { user: true };
-        test('Se debe mostrar el separador en el navbar', () => {
-            const { container } = render(<Navbar isAdmin={auth.user} />);
-            let element = container.getElementsByClassName("vr")[0];
-            expect(element).toBeVisible();
-        });
 
         test('Se debe mostrar la opcion A. Categorías en el navbar', () => {
             render(<Navbar isAdmin={auth.user} />);

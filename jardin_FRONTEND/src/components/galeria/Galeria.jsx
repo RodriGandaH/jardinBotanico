@@ -42,7 +42,6 @@ const Galeria = () => {
         });
         plantas = getPlantasOrdenadas(1, plantas);
         plantasCopia = plantas;
-        console.log(plantas);
         setPlantas(plantas);
     }
 
@@ -148,22 +147,30 @@ const Galeria = () => {
             </div>
 
             <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                {plantas.map(planta => (
-                    <div key={planta.id} className="col">
-                        <div className="tarjeta card h-100">
-                            <a id="enlacePlanta" href={"/planta/" + planta.id} style={{ textDecoration: "none" }}>
-                                <img
-                                    src={`http://127.0.0.1:8000/${planta.images[0].image}`}
-                                    className="p-1 card-img-top object-fit-scale rounded"
-                                    alt={planta.name} height={"250"} />
-                                <div className="card-body text-dark border-top" style={{whiteSpace: "pre"}}>
-                                    <h5><b>Nombre:</b>  {planta.name}</h5>
-                                    <h6><b>Categoria:</b>    {planta.category}</h6>
-                                </div>
-                            </a>
+                {plantas.length == 0 ? (
+                    <>
+                    <div></div>
+                    <h5 className="text-center"><i>No se encontró niguna planta.</i></h5>
+                    <div></div>
+                    </>
+                ) : (
+                    plantas.map(planta => (
+                        <div key={planta.id} className="col">
+                            <div className="tarjeta card h-100">
+                                <a id="enlacePlanta" href={"/planta/" + planta.id} style={{ textDecoration: "none" }}>
+                                    <img
+                                        src={`http://127.0.0.1:8000/${planta.images[0].image}`}
+                                        className="p-1 card-img-top object-fit-scale rounded"
+                                        alt={planta.name} height={"250"} />
+                                    <div className="card-body text-dark border-top" style={{whiteSpace: "pre"}}>
+                                        <h5><b>Nombre:</b>  {planta.name}</h5>
+                                        <h6><b>Categoria:</b>    {planta.category}</h6>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
-                    </div>
-                ))}
+                    ))
+                )}
             </div>
         </div >
     );

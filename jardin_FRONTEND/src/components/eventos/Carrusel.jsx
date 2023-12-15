@@ -19,7 +19,7 @@ const Carrusel = ({ imagenes }) => {
                                 className={imagen.id === idPrimeraImagen ? "active" : ""}
                                 aria-current={imagen.id === idPrimeraImagen ? "true" : "false"}
                                 aria-label={"Slide " + nroSlide}
-                                key={imagen.id}>
+                                key={"botonesCarruselEventos" + imagen.id}>
                             </button>
                         );
                     })}
@@ -28,7 +28,7 @@ const Carrusel = ({ imagenes }) => {
                     {imagenes.map(imagen => (
                         <div
                             className={"carousel-item " + (imagen.id === idPrimeraImagen ? "active" : "")}
-                            key={imagen.id}
+                            key={"itemCarruselEventos" + imagen.id}
                             style={{ height: "100%" }}
                         >
                             <div className="d-flex align-items-center justify-content-center"
