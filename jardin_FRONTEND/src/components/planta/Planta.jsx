@@ -23,18 +23,18 @@ const Planta = () => {
         <h4 className="text-center">Cargando planta...</h4>
       ) : (
         <>
-          <h3 className="text-center">{planta.name}</h3>
+          <h3 className="text-center" style={{color: "#091f14"}}>{planta.name}</h3>
           <div className="d-flex justify-content-center">
             <Carrusel imagenes={planta.images} height={"400px"} heightCont={"450px"} width={"600px"} />
           </div>
-          <h4 className="text-center mt-2 border-bottom pb-3">
+          <h4 className="text-center mt-2 border-bottom pb-3" style={{color: "#091f14"}}>
             Nombre científico: <i>{planta.scientific_name}</i>
           </h4>
-          <h5 className="mt-3">Descripción</h5>
+          <h5 className="mt-3" style={{color: "#091f14"}}>Descripción</h5>
           <div className="my-3" style={{ whiteSpace: "pre-wrap" }}>
             {planta.description}
           </div>
-          <h5 className="mt-3 border-top pt-3" hidden={planta.medicinal_properties.length == 0}>
+          <h5 className="mt-3 border-top pt-3" hidden={planta.medicinal_properties.length == 0} style={{color: "#091f14"}}>
             Propiedades medicinales
           </h5>
           {planta.medicinal_properties.map(property => (
