@@ -54,7 +54,7 @@ function Deleteinf({ inf, onUpdate }) {
                         <div className="modal-body">
                             <p>
                                 ¿Estás seguro de que quieres eliminar esta
-                                información?
+                                información: "{inf.name}" ?
                             </p>
                         </div>
                         <div className="modal-footer">
