@@ -24,7 +24,7 @@ function Info() {
         <>
             <h1 className="mb-4">Informacion</h1>
 
-            <CreateInfo onUpdate={handleUpdate} />
+            <CreateInfo onUpdate={handleUpdate} info={info}/>
             {info.length > 0 ? (
                 info.map((inf) => (
                     <div className="d-flex justify-content-between mb-3 border rounded" key={inf.id}>

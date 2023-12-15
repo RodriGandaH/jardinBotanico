@@ -5,6 +5,7 @@ function CreateInfo({ onUpdate, info }) {
     const [name, setName] = useState('');
     const [data, setData] = useState('');
     const [label, setLabel] = useState('Dato');
+    const opciones = ["Email", "Facebook", "Instagram", "Telefono", "Twitter"];
 
     useEffect(() => {
         let input = document.getElementById("dato");
@@ -90,6 +91,7 @@ function CreateInfo({ onUpdate, info }) {
                 className="btn btn-primary mb-3"
                 data-bs-toggle="modal"
                 data-bs-target="#createInfoModal"
+                disabled={info.length === 5}
             >
                 Registrar Informacion
             </button>
@@ -133,11 +135,12 @@ function CreateInfo({ onUpdate, info }) {
                                     <option value="">
                                         Seleccione una opción
                                     </option>
-                                    <option value="Email">Email</option>
-                                    <option value="Facebook">Facebook</option>
-                                    <option value="Instagram">Instagram</option>
-                                    <option value="Telefono">Telefono</option>
-                                    <option value="Twitter">Twitter</option>
+                                    {opciones.map(opcion => {
+                                        let usado = info.find(inf => inf.name === opcion);
+                                        if (!usado) {
+                                            return <option value={opcion}>{opcion}</option>
+                                        }
+                                    })}
                                 </select>
                                 <div className="invalid-feedback">
                                     Debe seleccionar una opción valida.
