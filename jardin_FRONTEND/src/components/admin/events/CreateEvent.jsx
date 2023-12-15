@@ -9,7 +9,7 @@ function CreateEvent({ onUpdate, events }) {
     const [description, setDescription] = useState('');
     const [images, setImages] = useState([]);
     const [previewImages, setPreviewImages] = useState([]);
-    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-ñ]+$";
     let patternExistentes = "^(";
 
     useEffect(() => {
@@ -69,6 +69,7 @@ function CreateEvent({ onUpdate, events }) {
     };
 
     const checkDataValidity = (form) => {
+        setNombreFeedback(name);
         let valid = form.checkValidity() && previewImages.length > 0;
         return valid;
     }
@@ -182,7 +183,7 @@ function CreateEvent({ onUpdate, events }) {
                                             setName(e.target.value)
                                         }
                                         onKeyUp={e => setNombreFeedback(e.target.value)}
-                                        pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                        pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                         required
                                     />
                                     <div className="invalid-feedback" id='nombreEventoFeedback'>

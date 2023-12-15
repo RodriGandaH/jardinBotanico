@@ -32,7 +32,7 @@ function EditPlant({ plant, onUpdate, plants }) {
     const idImgFeedback = "editImgFeedback" + plant.id;
     const idNombrePlanta = "editNombrePlanta" + plant.id;
     const idNombrePlantaFeedback = "editNombreFeedback" + plant.id;
-    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-ñ]+$";
     let patternExistentes = "^(";
 
     const fetchCategories = async () => {
@@ -324,7 +324,7 @@ function EditPlant({ plant, onUpdate, plants }) {
                                                 setName(e.target.value)
                                             }
                                             onKeyUp={e => setNombreFeedback(e.target.value)}
-                                            pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                            pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                             required
                                         />
                                         <div className="invalid-feedback" id={idNombrePlantaFeedback}>
@@ -348,7 +348,7 @@ function EditPlant({ plant, onUpdate, plants }) {
                                                     e.target.value
                                                 )
                                             }
-                                            pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                            pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                             required
                                         />
                                         <div className="invalid-feedback">

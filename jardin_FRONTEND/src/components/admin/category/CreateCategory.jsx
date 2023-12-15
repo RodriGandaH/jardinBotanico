@@ -5,7 +5,7 @@ function CreateCategory({ onUpdate, categories }) {
 
     const [name, setName] = useState('');
     const [feedback, setFeedBack] = useState("El nombre no puede estar vacio.");
-    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-ñ]+$";
     let patternExistentes = "^(";
 
     const handleSubmit = async (event) => {
@@ -113,7 +113,7 @@ function CreateCategory({ onUpdate, categories }) {
                                     placeholder="Ingrese un nombre..."
                                     onChange={(e) => setName(e.target.value)}
                                     onKeyUp={e => nameChange(e.target.value)}
-                                    pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                    pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                     required
                                 />
                                 <div className="invalid-feedback">

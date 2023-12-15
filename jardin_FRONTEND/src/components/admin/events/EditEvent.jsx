@@ -21,7 +21,7 @@ function EditEvent({ event: evento, onUpdate, events }) {
     const idAddImgButton = "botonImgEditar" + evento.id;
     const idTextImgFeedback = "textImgEditarFeedback" + evento.id;
     const [deletedImageIds, setDeletedImageIds] = useState([]);
-    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-ñ]+$";
     let patternExistentes = "^(";
 
     useEffect(() => {
@@ -246,7 +246,7 @@ function EditEvent({ event: evento, onUpdate, events }) {
                                             setName(e.target.value)
                                         }
                                         onKeyUp={e => setNombreFeedback(e.target.value)}
-                                        pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                        pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                         required
                                     />
                                     <div className="invalid-feedback" id={idFeedbackNombreEvento}>

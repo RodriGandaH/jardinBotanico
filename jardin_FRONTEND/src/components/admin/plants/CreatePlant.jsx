@@ -11,7 +11,7 @@ function CreatePlant({ onUpdate, plants }) {
     const [previewImages, setPreviewImages] = useState([]);
     const [categories, setCategories] = useState([]);
     const [medicinalProperties, setMedicinalProperties] = useState([]);
-    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-ñ]+$";
     let patternExistentes = "^(";
 
     useEffect(() => {
@@ -205,7 +205,7 @@ function CreatePlant({ onUpdate, plants }) {
                                                 setName(e.target.value)
                                             }
                                             onKeyUp={e => setNombreFeedback(e.target.value)}
-                                            pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                            pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                             required
                                         />
                                         <div className="invalid-feedback" id='nombrePlantaFeedback'>
@@ -229,7 +229,7 @@ function CreatePlant({ onUpdate, plants }) {
                                                     e.target.value
                                                 )
                                             }
-                                            pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                            pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                             required
                                         />
                                         <div className="invalid-feedback">

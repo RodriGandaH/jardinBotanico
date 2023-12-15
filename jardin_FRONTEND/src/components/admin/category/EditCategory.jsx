@@ -10,7 +10,7 @@ function EditCategory({ category, onUpdate, categories }) {
     const idLabel = "modalEditarCategoriaLabel" + category.id;
     const idInput = "nombreCategoria" + category.id;
     const idForm = "formCategoria" + category.id;
-    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-]+$";
+    const patternBase = ")[a-zA-Z0-9 ,\\.:\\-ñ]+$";
     let patternExistentes = "^(";
 
 
@@ -98,7 +98,7 @@ function EditCategory({ category, onUpdate, categories }) {
                                     placeholder="Ingrese un nombre..."
                                     onChange={(e) => setName(e.target.value)}
                                     onKeyUp={e => nameChange(e.target.value)}
-                                    pattern='[a-zA-Z0-9 ,\.:\-]+$'
+                                    pattern='[a-zA-Z0-9 ,\.:\-ñ]+$'
                                     required
                                 />
                                 <div className="invalid-feedback">
