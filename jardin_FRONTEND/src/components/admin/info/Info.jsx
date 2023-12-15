@@ -41,7 +41,7 @@ function Info() {
                     </div>
                 ))
             ) : (
-                <p>No hay eventos registrados.</p>
+                <p>No hay información registrados.</p>
             )}
         </>
     );
