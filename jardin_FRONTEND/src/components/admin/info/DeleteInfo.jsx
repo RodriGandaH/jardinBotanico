@@ -24,7 +24,7 @@ function Deleteinf({ inf, onUpdate }) {
             <button
                 data-bs-toggle="modal"
                 data-bs-target={`#deleteinfModal-${inf.id}`}
-                className="btn btn-danger mx-1"
+                className="btn btn-outline-danger mx-1"
             >
                 Eliminar
             </button>

@@ -134,11 +134,11 @@ function CreateEvent({ onUpdate, events }) {
     return (
         <div>
             <button
-                className="btn btn-primary mb-3"
+                className="btn btn-success mb-3"
                 data-bs-toggle="modal"
                 data-bs-target="#createEventModal"
             >
-                Crear evento
+                Registrar evento
             </button>
             <div
                 className="modal fade"
@@ -155,7 +155,7 @@ function CreateEvent({ onUpdate, events }) {
                                 className="modal-title"
                                 id="createEventModalLabel"
                             >
-                                Crear evento
+                                Registrar evento
                             </h5>
                             <button
                                 type="button"
@@ -325,7 +325,7 @@ function CreateEvent({ onUpdate, events }) {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-success"
                                 >
                                     Guardar
                                 </button>

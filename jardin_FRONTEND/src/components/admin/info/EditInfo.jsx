@@ -99,7 +99,7 @@ function Editinf({ onUpdate, inf }) {
         <>
             <button
                 type="button"
-                className="btn btn-primary mb-3"
+                className="btn btn-outline-success mb-3"
                 data-bs-toggle="modal"
                 data-bs-target={`#editinfModal-${inf.id}`}
             >
@@ -119,7 +119,7 @@ function Editinf({ onUpdate, inf }) {
                                 className="modal-title fs-5"
                                 id="editinfModalLabel"
                             >
-                                Editar informacion
+                                Editar información
                             </h1>
                             <button
                                 type="button"
@@ -181,7 +181,7 @@ function Editinf({ onUpdate, inf }) {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-success"
                                 >
                                     Guardar
                                 </button>

@@ -27,7 +27,7 @@ function DeleteEvent({ event: evento, onUpdate }) {
             <button
                 data-bs-toggle="modal"
                 data-bs-target={`#deleteEventModal-${evento.id}`}
-                className="btn btn-danger mx-1"
+                className="btn btn-outline-danger mx-1"
             >
                 Eliminar
             </button>

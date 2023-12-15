@@ -30,7 +30,7 @@ function Events() {
 
     return (
         <>
-            <h1 className="mb-4">Eventos</h1>
+            <h1 className="mb-4" style={{color: "#091f14"}}>Eventos</h1>
             <div className="row mt-4">
                 <div className="col-md-6">
                     <CreateEvent onUpdate={fetchEvents} events={events} />

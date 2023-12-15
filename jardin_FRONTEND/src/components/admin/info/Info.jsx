@@ -22,7 +22,7 @@ function Info() {
 
     return (
         <>
-            <h1 className="mb-4">Informacion</h1>
+            <h1 className="mb-4" style={{color: "#091f14"}}>Información</h1>
 
             <CreateInfo onUpdate={handleUpdate} info={info}/>
             {info.length > 0 ? (

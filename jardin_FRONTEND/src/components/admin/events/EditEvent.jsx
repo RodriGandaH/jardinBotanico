@@ -197,7 +197,7 @@ function EditEvent({ event: evento, onUpdate, events }) {
     return (
         <div>
             <button
-                className="btn btn-primary me-2"
+                className="btn btn-outline-success me-2"
                 data-bs-toggle="modal"
                 data-bs-target={`#editEventModal-${evento.id}`}
             >
@@ -389,7 +389,7 @@ function EditEvent({ event: evento, onUpdate, events }) {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-success"
                                 >
                                     Guardar
                                 </button>

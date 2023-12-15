@@ -26,21 +26,21 @@ const Footer = () => {
             {loading ? (
                 <div></div>
             ) : (
-                <footer className="footer bg-success-subtle" style={{ paddingTop: '5px' }}>
+                <footer className="footer" style={{ paddingTop: '5px', backgroundColor: "#265f47" }}>
                     <section className="text-center py-2">
-                        <i className="bi bi-house-door-fill"></i> C. R. Rivero Torrez 1630, Cochabamba (Muyurina) 1638 Cochabamba, Bolivia
+                        <i style={{ color: "#bfbfbf" }} className="h5 bi bi-house-door-fill"></i> <span className="text-light">C. R. Rivero Torrez 1630, Cochabamba (Muyurina) 1638 Cochabamba, Bolivia</span>
                         {infoFooter.map(info => {
                             if (info.name === "Telefono" || info.name === "Email") {
-                                return (<a key={info.id}><i className={"ms-4 bi " + icons.get(info.name)}></i> {info.data}</a>);
+                                return (<a key={info.id}><i style={{ color: "#bfbfbf" }} className={"ms-4 bi h5 " + icons.get(info.name)}></i> <span className="text-light">{info.data}</span></a>);
                             }
                         })}
                     </section>
-                    <section className="text-center py-2" style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
+                    <section className="text-center py-2" style={{ backgroundColor: "#17392b" }}>
                         {infoFooter.map(info => {
                             if (info.name != "Telefono" && info.name != "Email") {
                                 return (
                                     <a key={info.id} className="text-reset" href={info.data} target="_blanck">
-                                        <i className={"ms-4 bi " + icons.get(info.name)}></i>
+                                        <i style={{ color: "#bfbfbf" }} className={"ms-4 bi h4 " + icons.get(info.name)}></i>
                                     </a>
                                 );
                             }

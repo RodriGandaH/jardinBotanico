@@ -155,11 +155,11 @@ function CreatePlant({ onUpdate, plants }) {
     return (
         <div>
             <button
-                className="btn btn-primary mb-3"
+                className="btn btn-success mb-3"
                 data-bs-toggle="modal"
                 data-bs-target="#createPlantModal"
             >
-                Crear planta
+                Registrar planta
             </button>
 
             <div
@@ -176,7 +176,7 @@ function CreatePlant({ onUpdate, plants }) {
                                 className="motal-title"
                                 id="createPlantModalLabel"
                             >
-                                Crear Planta
+                                Registrar Planta
                             </h5>
                             <button
                                 className="btn-close"
@@ -331,7 +331,7 @@ function CreatePlant({ onUpdate, plants }) {
                                             </div>
                                             <button
                                                 type="button"
-                                                className="btn btn-dark my-3 ms-2"
+                                                className="btn btn-outline-success my-3 ms-2"
                                                 onClick={addMedicinalProperty}
                                             >
                                                 Agregar
@@ -411,7 +411,7 @@ function CreatePlant({ onUpdate, plants }) {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-success"
                                 >
                                     Guardar
                                 </button>

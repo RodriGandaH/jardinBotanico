@@ -27,7 +27,7 @@ function DeleteCategory({ category, onUpdate }) {
         <>
             <button
                 type="button"
-                className="btn btn-danger"
+                className="btn btn-outline-danger"
                 data-bs-toggle="modal"
                 data-bs-target={'#' + idModal}
             >

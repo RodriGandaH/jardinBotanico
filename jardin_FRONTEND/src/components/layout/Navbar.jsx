@@ -8,10 +8,10 @@ export const activeUrl = (ruta) => {
 
 const Navbar = (props) => {
     return (
-        <nav className="navbar navbar-expand-lg fixed-top bg-success-subtle">
+        <nav className="navbar navbar-expand-lg fixed-top" style={{ backgroundColor: "#17392b" }}>
             <div className="container-fluid">
-                <a className="navbar-brand" href="/">
-                    Jardín
+                <a className="navbar-brand text-light" href="/">
+                    <h4>Jardín</h4>
                 </a>
                 <button
                     className="navbar-toggler"
@@ -32,7 +32,7 @@ const Navbar = (props) => {
                         <li className="nav-item">
                             <a
                                 className={
-                                    'nav-link' +
+                                    'nav-link text-light' +
                                     (activeUrl('/galeria') ? ' active' : '')
                                 }
                                 href="/galeria"
@@ -43,7 +43,7 @@ const Navbar = (props) => {
                         <li className="nav-item">
                             <a
                                 className={
-                                    'nav-link' +
+                                    'nav-link text-light' +
                                     (activeUrl('/eventos') ? ' active' : '')
                                 }
                                 href="/eventos"
@@ -51,11 +51,10 @@ const Navbar = (props) => {
                                 Eventos
                             </a>
                         </li>
-                        <div className="vr" hidden={!props.isAdmin}></div>
-                        <li className="nav-item" hidden={!props.isAdmin}>
+                        <li className="nav-item border-start border-secondary" hidden={!props.isAdmin}>
                             <a
                                 className={
-                                    'nav-link' +
+                                    'nav-link text-light' +
                                     (activeUrl('/admin/category')
                                         ? ' active'
                                         : '')
@@ -68,7 +67,7 @@ const Navbar = (props) => {
                         <li className="nav-item" hidden={!props.isAdmin}>
                             <a
                                 className={
-                                    'nav-link' +
+                                    'nav-link text-light' +
                                     (activeUrl('/admin/plants')
                                         ? ' active'
                                         : '')
@@ -81,7 +80,7 @@ const Navbar = (props) => {
                         <li className="nav-item" hidden={!props.isAdmin}>
                             <a
                                 className={
-                                    'nav-link' +
+                                    'nav-link text-light' +
                                     (activeUrl('/admin/events')
                                         ? ' active'
                                         : '')
@@ -94,7 +93,7 @@ const Navbar = (props) => {
                         <li className="nav-item" hidden={!props.isAdmin}>
                             <a
                                 className={
-                                    'nav-link' +
+                                    'nav-link text-light' +
                                     (activeUrl('/admin/info') ? ' active' : '')
                                 }
                                 href="/admin/info"

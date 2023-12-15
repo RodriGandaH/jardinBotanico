@@ -35,7 +35,7 @@ function Category() {
 
     return (
         <>
-            <h2>Categorías</h2>
+            <h2 style={{color: "#091f14"}}>Categorías</h2>
             <div className="row mt-4">
                 <div className="col-md-6">
                     <CreateCategory onUpdate={fetchCategories} categories={categories} />

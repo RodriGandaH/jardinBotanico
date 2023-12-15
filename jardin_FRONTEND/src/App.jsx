@@ -35,7 +35,7 @@ function App() {
             <main
                 className="container"
                 style={{
-                    marginTop: '75px',
+                    marginTop: '80px',
                     marginBottom: '20px',
                     flex: "1 0 auto"
                 }}

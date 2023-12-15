@@ -66,7 +66,7 @@ function CreateCategory({ onUpdate, categories }) {
         <>
             <button
                 type="button"
-                className="btn btn-primary"
+                className="btn btn-success"
                 data-bs-toggle="modal"
                 data-bs-target="#modalCrearCategoria"
             >
@@ -88,7 +88,7 @@ function CreateCategory({ onUpdate, categories }) {
                                 className="modal-title fs-5"
                                 id="modalCrearCategoriaLabel"
                             >
-                                Crear categoría
+                                Registrar categoría
                             </h1>
                             <button
                                 type="button"
@@ -131,7 +131,7 @@ function CreateCategory({ onUpdate, categories }) {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-success"
                                 >
                                     Guardar
                                 </button>

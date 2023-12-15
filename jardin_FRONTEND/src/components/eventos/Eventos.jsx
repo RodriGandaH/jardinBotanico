@@ -48,7 +48,7 @@ const Eventos = () => {
         <>
             <div className="row">
                 <div className="col-md-6">
-                    <h2>Eventos</h2>
+                    <h2 style={{color: "#091f14"}}>Eventos</h2>
                 </div>
                 <div className="col-md-6">
                     <div className="input-group mb-3">
@@ -65,7 +65,7 @@ const Eventos = () => {
                 </div>
             </div>
             {eventos.map(evento => (
-                <div className="col-md-12 border mb-4" key={evento.id}>
+                <div className="col-md-12 border rounded mb-4" key={evento.id}>
                     <div className={"d-flex my-3 " + getFlexDirection()}>
                         <div className="d-flex col-md-4 col-sm-12 justify-content-center align-items-center">
                             <Carrusel imagenes={evento.images} />

@@ -273,7 +273,7 @@ function EditPlant({ plant, onUpdate, plants }) {
     return (
         <div>
             <button
-                className="btn btn-primary me-2"
+                className="btn btn-outline-success me-2"
                 data-bs-toggle="modal"
                 data-bs-target={`#editPlantModal-${plant.id}`}
                 onClick={fetchCategories}
@@ -453,7 +453,7 @@ function EditPlant({ plant, onUpdate, plants }) {
                                             </div>
                                             <button
                                                 type="button"
-                                                className="btn btn-dark my-3 ms-2"
+                                                className="btn btn-outline-success my-3 ms-2"
                                                 onClick={addMedicinalProperty}
                                             >
                                                 Agregar
@@ -534,7 +534,7 @@ function EditPlant({ plant, onUpdate, plants }) {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-success"
                                 >
                                     Guardar
                                 </button>

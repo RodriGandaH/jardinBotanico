@@ -88,12 +88,12 @@ function CreateInfo({ onUpdate, info }) {
         <>
             <button
                 type="button"
-                className="btn btn-primary mb-3"
+                className="btn btn-success mb-3"
                 data-bs-toggle="modal"
                 data-bs-target="#createInfoModal"
                 disabled={info.length === 5}
             >
-                Registrar Informacion
+                Registrar Información
             </button>
             <div
                 className="modal fade"
@@ -109,7 +109,7 @@ function CreateInfo({ onUpdate, info }) {
                                 className="modal-title fs-5"
                                 id="createInfoModalLabel"
                             >
-                                Crear informacion
+                                Registrar información
                             </h1>
                             <button
                                 type="button"
@@ -127,7 +127,7 @@ function CreateInfo({ onUpdate, info }) {
                                 <select
                                     name="info"
                                     id="info"
-                                    className="form-select mb-3"
+                                    className="form-select"
                                     value={name}
                                     onChange={(e) => setName(e.target.value)}
                                     required
@@ -145,7 +145,7 @@ function CreateInfo({ onUpdate, info }) {
                                 <div className="invalid-feedback">
                                     Debe seleccionar una opción valida.
                                 </div>
-                                <label htmlFor="dato" className="form-label">
+                                <label htmlFor="dato" className="form-label mt-2">
                                     {label}:
                                 </label>
                                 <input
@@ -171,7 +171,7 @@ function CreateInfo({ onUpdate, info }) {
                                 </button>
                                 <button
                                     type="submit"
-                                    className="btn btn-primary"
+                                    className="btn btn-success"
                                 >
                                     Guardar
                                 </button>

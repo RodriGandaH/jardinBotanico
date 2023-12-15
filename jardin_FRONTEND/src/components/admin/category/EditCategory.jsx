@@ -76,7 +76,7 @@ function EditCategory({ category, onUpdate, categories }) {
 
     return (
         <>
-            <button type="button" className="btn btn-primary" data-bs-toggle="modal" data-bs-target={"#" + idModal}>
+            <button type="button" className="btn btn-outline-success" data-bs-toggle="modal" data-bs-target={"#" + idModal}>
                 Editar
             </button>
 
@@ -107,7 +107,7 @@ function EditCategory({ category, onUpdate, categories }) {
                             </div>
                             <div className="modal-footer">
                                 <button type="button" className="btn btn-secondary" data-bs-dismiss="modal" onClick={resetModalData}>Cerrar</button>
-                                <button type="submit" className="btn btn-primary">Guardar</button>
+                                <button type="submit" className="btn btn-success">Guardar</button>
                             </div>
                         </form>
                     </div>

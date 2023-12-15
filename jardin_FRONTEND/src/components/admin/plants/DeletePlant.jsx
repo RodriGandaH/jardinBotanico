@@ -25,7 +25,7 @@ function DeletePlant({ plant, onUpdate }) {
             <button
                 data-bs-toggle="modal"
                 data-bs-target={`#deletePlantModal-${plant.id}`}
-                className="btn btn-danger mx-1"
+                className="btn btn-outline-danger mx-1"
             >
                 Eliminar
             </button>

@@ -23,7 +23,7 @@ const LogoutButton = (props) => {
 
     return (
         <button
-            className="btn btn-outline-danger"
+            className="btn btn-outline-warning"
             onClick={logout}
             hidden={!props.isAdmin}
         >
