@@ -92,7 +92,6 @@ function Editinf({ onUpdate, inf }) {
         );
         setName(response.data.name);
         setData(response.data.data);
-        setLabel('Dato');
     };
 
     return (
